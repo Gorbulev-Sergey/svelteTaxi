@@ -4,25 +4,18 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
+	let isLogin = false;
 	let user;
 
 	onMount(() => {
-		auth.onAuthStateChanged((auth) => {
-			if (auth) {
-				user = auth;
-			} else {
-				goto('/client/login');
-			}
-		});
+		goto('/order');
+		// auth.onAuthStateChanged((auth) => {
+		// 	if (auth) {
+		// 		user = auth;
+		// 		isLogin = true;
+		// 	} else {
+		// 		goto('/client/login');
+		// 	}
+		// });
 	});
 </script>
-
-{#if user}
-	<h1>Привет {user?.displayName}</h1>
-	<button
-		class="btn btn-dark"
-		on:click={() => {
-			auth.signOut();
-		}}>Выйти</button
-	>
-{/if}

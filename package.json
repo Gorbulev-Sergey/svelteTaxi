@@ -24,6 +24,7 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^9.9.4",
-		"firebaseui": "^6.0.1"
+		"firebaseui": "^6.0.1",
+		"ymaps": "^0.2.1"
 	}
 }

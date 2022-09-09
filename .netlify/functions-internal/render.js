@@ -5,7 +5,7 @@ exports.handler = init({
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		entry: {"file":"_app/immutable/start-e825527a.js","imports":["_app/immutable/start-e825527a.js","_app/immutable/chunks/index-2f2919c0.js","_app/immutable/chunks/singletons-515a0c39.js"],"stylesheets":[]},
+		entry: {"file":"_app/immutable/start-3e1fc5e6.js","imports":["_app/immutable/start-3e1fc5e6.js","_app/immutable/chunks/index-2f2919c0.js","_app/immutable/chunks/singletons-01e9957f.js"],"stylesheets":[]},
 		nodes: [
 			() => Promise.resolve().then(() => require('../server/nodes/0.js')),
 			() => Promise.resolve().then(() => require('../server/nodes/1.js')),

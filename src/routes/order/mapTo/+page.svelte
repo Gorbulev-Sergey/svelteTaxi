@@ -1,29 +1,42 @@
 <script>
+	// @ts-nocheck
 	import { goto } from '$app/navigation';
 	import { positionTo } from '$lib/components/MyData';
 	import Position from '$lib/Position';
-
-	// @ts-nocheck
-
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
-	let Moscow = [55.76, 37.64];
-	let myPlacemark;
 	let myPositionTo = new Position();
+	let currentPosition = [55.76, 37.64];
+	let myMap, myPlacemark, geolocation;
 
 	function init() {
-		var myPlacemark,
-			myMap = new ymaps.Map(
-				'map',
-				{
-					center: [55.753994, 37.622093],
-					zoom: 9
-				},
-				{
-					searchControlProvider: 'yandex#search'
-				}
-			);
+		geolocation = ymaps.geolocation;
+		myMap = new ymaps.Map(
+			'map',
+			{
+				center: currentPosition,
+				zoom: 9
+			},
+			{
+				searchControlProvider: 'yandex#search'
+			}
+		);
+
+		// положение, вычисленное по ip пользователя
+		geolocation
+			.get({
+				provider: 'yandex',
+				mapStateAutoApply: true
+			})
+			.then(function (result) {
+				// Красным цветом пометим положение, вычисленное через ip.
+				result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+				result.geoObjects.get(0).properties.set({
+					balloonContentBody: 'Мое местоположение'
+				});
+				myMap.geoObjects.add(result.geoObjects);
+			});
 
 		// Слушаем клик на карте.
 		myMap.events.add('click', function (e) {
@@ -105,9 +118,16 @@
 	<div id="map" class="rounded" style="width: 100%; height:80vh" />
 </div>
 <button
-	class="btn btn-dark mt-3"
+	class="btn btn-dark mt-3 me-1"
 	on:click={() => {
 		positionTo.update((v) => myPositionTo);
 		goto('/order');
 	}}>Подтвердить выбор</button
+>
+<button
+	class="btn btn-dark mt-3"
+	on:click={() => {
+		positionTo.update((v) => new Position());
+		goto('/order');
+	}}>Отмена</button
 >

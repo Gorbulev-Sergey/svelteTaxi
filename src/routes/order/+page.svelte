@@ -2,9 +2,18 @@
 	import { onMount } from 'svelte';
 	import { auth, db } from '$lib/firebase';
 	import { goto } from '$app/navigation';
-	import { onValue, push, query, ref } from 'firebase/database';
+	import {
+		child,
+		equalTo,
+		get,
+		onValue,
+		orderByChild,
+		push,
+		query,
+		ref,
+		set
+	} from 'firebase/database';
 	import Order from '$lib/Order';
-	import { toggle_class } from 'svelte/internal';
 	import { positionFrom, positionTo } from '$lib/components/MyData';
 
 	let isLogin = false;
@@ -16,10 +25,13 @@
 			if (auth) {
 				user = auth;
 				isLogin = true;
-				onValue(ref(db, 'orders'), (snapshot) => {
-					mapOrders = snapshot.val();
-					console.log(mapOrders);
-				});
+				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
+				onValue(
+					query(child(ref(db), 'orders'), ...[orderByChild('clientUid'), equalTo(user.uid)]),
+					(s) => {
+						mapOrders = s.val();
+					}
+				);
 				positionFrom.subscribe((v) => (order.positionFrom = v));
 				positionTo.subscribe((v) => (order.positionTo = v));
 			} else {
@@ -29,6 +41,7 @@
 	});
 	function createOrder() {
 		if (order.positionFrom && order.positionTo && order.goods && order.car) {
+			order.clientUid = auth.currentUser?.uid;
 			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString(); //
 			push(ref(db, 'orders'), order);
 			order = new Order();

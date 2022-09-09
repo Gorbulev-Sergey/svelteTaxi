@@ -2,25 +2,26 @@
 	// @ts-nocheck
 
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { positionFrom } from '$lib/components/MyData';
 	import Position from '$lib/Position';
-	import { goto } from '$app/navigation';
 
-	let Moscow = [55.76, 37.64];
 	let myPositionFrom = new Position();
+	let currentPosition = [55.76, 37.64];
+	let myMap, myPlacemark, geolocation;
 
 	function init() {
-		var myPlacemark,
-			myMap = new ymaps.Map(
-				'map',
-				{
-					center: Moscow,
-					zoom: 9
-				},
-				{
-					searchControlProvider: 'yandex#search'
-				}
-			);
+		geolocation = ymaps.geolocation;
+		myMap = new ymaps.Map(
+			'map',
+			{
+				center: currentPosition,
+				zoom: 9
+			},
+			{
+				searchControlProvider: 'yandex#search'
+			}
+		);
 
 		// Слушаем клик на карте.
 		myMap.events.add('click', function (e) {
@@ -83,6 +84,34 @@
 				);
 			});
 		}
+
+		// Сравним положение, вычисленное по ip пользователя и
+		// положение, вычисленное средствами браузера.
+		geolocation
+			.get({
+				provider: 'yandex',
+				mapStateAutoApply: true
+			})
+			.then(function (result) {
+				// Красным цветом пометим положение, вычисленное через ip.
+				result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+				result.geoObjects.get(0).properties.set({
+					balloonContentBody: 'Мое местоположение'
+				});
+				myMap.geoObjects.add(result.geoObjects);
+			});
+
+		// geolocation
+		// 	.get({
+		// 		provider: 'browser',
+		// 		mapStateAutoApply: true
+		// 	})
+		// 	.then(function (result) {
+		// 		// Синим цветом пометим положение, полученное через браузер.
+		// 		// Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+		// 		result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+		// 		myMap.geoObjects.add(result.geoObjects);
+		// 	});
 	}
 
 	onMount(() => {
@@ -103,9 +132,16 @@
 </div>
 
 <button
-	class="btn btn-dark mt-3"
+	class="btn btn-dark mt-3 me-1"
 	on:click={() => {
 		positionFrom.update((v) => myPositionFrom);
 		goto('/order');
 	}}>Подтвердить выбор</button
+>
+<button
+	class="btn btn-dark mt-3"
+	on:click={() => {
+		positionFrom.update((v) => new Position());
+		goto('/order');
+	}}>Отмена</button
 >

@@ -8,6 +8,7 @@ export default class Order {
 		this.car = null;
 		this.dateOrderCreated = new Date().toLocaleDateString();
 		this.dateOfDelivery = new Date().toLocaleDateString();
-		this.driver = null;
+		this.driverUid = null;
+		this.clientUid = null;
 	}
 }

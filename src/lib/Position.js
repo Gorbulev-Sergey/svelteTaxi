@@ -1,6 +1,6 @@
 export default class Position {
-	constructor() {
-		this.address = '';
-		this.coordinates = [];
+	constructor(address, coordinates) {
+		this.address = address;
+		this.coordinates = coordinates;
 	}
 }

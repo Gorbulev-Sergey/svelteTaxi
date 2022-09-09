@@ -5,6 +5,7 @@
 	import { onValue, push, query, ref } from 'firebase/database';
 	import Order from '$lib/Order';
 	import { toggle_class } from 'svelte/internal';
+	import { positionFrom, positionTo } from '$lib/components/MyData';
 
 	let isLogin = false;
 	let user;
@@ -19,6 +20,8 @@
 					mapOrders = snapshot.val();
 					console.log(mapOrders);
 				});
+				positionFrom.subscribe((v) => (order.positionFrom = v));
+				positionTo.subscribe((v) => (order.positionTo = v));
 			} else {
 				goto('/client/login');
 			}

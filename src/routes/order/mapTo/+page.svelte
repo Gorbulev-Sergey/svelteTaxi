@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import ymaps from 'ymaps';
 	import { onMount } from 'svelte';
 
@@ -8,7 +10,7 @@
 	onMount(() => {
 		ymaps
 			.load(
-				'https://api-maps.yandex.ru/2.1/??lang=ru_RU&amp;apikey=03fbdf33-aae8-4805-810c-47750f27261b'
+				'https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=03fbdf33-aae8-4805-810c-47750f27261b'
 			)
 			.then((maps) => {
 				map = new maps.Map('map', {

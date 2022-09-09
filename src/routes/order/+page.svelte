@@ -79,7 +79,10 @@
 				class="btn btn-dark mb-1"
 				data-bs-toggle="collapse"
 				data-bs-target="#collapseForm"
-				on:click={() => createOrder()}>Сделать заказ</button
+				on:click={() => {
+					createOrder();
+					order = new Order();
+				}}>Сделать заказ</button
 			>
 			<button
 				class="btn btn-dark mb-1"

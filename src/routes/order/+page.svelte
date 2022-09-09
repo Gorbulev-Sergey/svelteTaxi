@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
-	import Order from '$lib/Order';
 	import { auth, db } from '$lib/firebase';
 	import { goto } from '$app/navigation';
 	import { push, ref } from 'firebase/database';
+	import Order from '$lib/Order';
 
 	let isLogin = false;
 	let user;
@@ -31,10 +31,18 @@
 		<div class="input-group mb-3">
 			<input
 				class="form-control"
-				bind:value={order.position.address}
-				placeholder="куда, адрес доставки"
+				bind:value={order.positionFrom.address}
+				placeholder="откуда забирать товар"
 			/>
-			<button class="btn btn-dark" on:click={() => goto('/order/map')}>...</button>
+			<button class="btn btn-dark" on:click={() => goto('/order/mapFrom')}>...</button>
+		</div>
+		<div class="input-group mb-3">
+			<input
+				class="form-control"
+				bind:value={order.positionTo.address}
+				placeholder="куда везти товар"
+			/>
+			<button class="btn btn-dark" on:click={() => goto('/order/mapTo')}>...</button>
 		</div>
 		<input
 			class="form-control mb-3"

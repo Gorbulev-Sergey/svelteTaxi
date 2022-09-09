@@ -1,0 +1,120 @@
+{
+  ".svelte-kit/build/index.js": {
+    "file": "index.js",
+    "src": ".svelte-kit/build/index.js",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/build/hooks.js"
+    ]
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js"
+    ]
+  },
+  "src/routes/client/login/+page.svelte": {
+    "file": "entries/pages/client/login/_page.svelte.js",
+    "src": "src/routes/client/login/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js",
+      "_Client.js"
+    ]
+  },
+  "src/routes/client/register/+page.svelte": {
+    "file": "entries/pages/client/register/_page.svelte.js",
+    "src": "src/routes/client/register/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js",
+      "_Client.js"
+    ]
+  },
+  "src/routes/driver/login/+page.svelte": {
+    "file": "entries/pages/driver/login/_page.svelte.js",
+    "src": "src/routes/driver/login/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js",
+      "_Driver.js"
+    ]
+  },
+  "src/routes/driver/register/+page.svelte": {
+    "file": "entries/pages/driver/register/_page.svelte.js",
+    "src": "src/routes/driver/register/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js",
+      "_Driver.js"
+    ]
+  },
+  "src/routes/order/+page.svelte": {
+    "file": "entries/pages/order/_page.svelte.js",
+    "src": "src/routes/order/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_firebase.js"
+    ]
+  },
+  "src/routes/order/mapFrom/+page.svelte": {
+    "file": "entries/pages/order/mapFrom/_page.svelte.js",
+    "src": "src/routes/order/mapFrom/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/routes/order/mapTo/+page.svelte": {
+    "file": "entries/pages/order/mapTo/_page.svelte.js",
+    "src": "src/routes/order/mapTo/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "_index.js": {
+    "file": "chunks/index.js"
+  },
+  "_firebase.js": {
+    "file": "chunks/firebase.js"
+  },
+  "_Client.js": {
+    "file": "chunks/Client.js"
+  },
+  "_Driver.js": {
+    "file": "chunks/Driver.js"
+  },
+  ".svelte-kit/build/hooks.js": {
+    "file": "chunks/hooks.js",
+    "src": ".svelte-kit/build/hooks.js",
+    "isDynamicEntry": true
+  }
+}

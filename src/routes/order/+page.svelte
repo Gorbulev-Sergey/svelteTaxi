@@ -2,17 +2,7 @@
 	import { onMount } from 'svelte';
 	import { auth, db } from '$lib/firebase';
 	import { goto } from '$app/navigation';
-	import {
-		child,
-		equalTo,
-		get,
-		onValue,
-		orderByChild,
-		push,
-		query,
-		ref,
-		set
-	} from 'firebase/database';
+	import { child, equalTo, onValue, orderByChild, push, query, ref } from 'firebase/database';
 	import Order from '$lib/Order';
 	import { positionFrom, positionTo } from '$lib/components/MyData';
 

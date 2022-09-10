@@ -4,7 +4,6 @@
 	import { positionTo } from '$lib/components/MyData';
 	import Position from '$lib/Position';
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 
 	let myPositionTo = new Position();
 	let currentPosition = [55.76, 37.64];

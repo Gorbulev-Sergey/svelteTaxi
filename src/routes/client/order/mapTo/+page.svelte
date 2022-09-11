@@ -4,6 +4,7 @@
 	import { positionTo } from '$lib/scripts/myData';
 	import Position from '$lib/Position';
 	import { onMount } from 'svelte';
+	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 
 	let myPositionTo = new Position();
 	let currentPosition = [55.76, 37.64];
@@ -106,27 +107,23 @@
 	});
 </script>
 
-<svelte:head>
-	<script
-		src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=03fbdf33-aae8-4805-810c-47750f27261b"
-		type="text/javascript"></script>
-</svelte:head>
-
-<h4 class="my-3">Куда везти товар</h4>
-<div class="rounded">
-	<div id="map" class="rounded" style="width: 100%; height:80vh" />
-</div>
-<button
-	class="btn btn-dark mt-3 me-1"
-	on:click={() => {
-		positionTo.update((v) => myPositionTo);
-		goto('/client/order');
-	}}>Подтвердить выбор</button
->
-<button
-	class="btn btn-dark mt-3"
-	on:click={() => {
-		positionTo.update((v) => new Position());
-		goto('/client/order');
-	}}>Отмена</button
->
+<ComponentAuth>
+	<h4 class="my-3">Куда везти товар</h4>
+	<div class="rounded">
+		<div id="map" class="rounded" style="width: 100%; height:80vh" />
+	</div>
+	<button
+		class="btn btn-dark mt-3 me-1"
+		on:click={() => {
+			positionTo.update((v) => myPositionTo);
+			goto('/client/order');
+		}}>Подтвердить выбор</button
+	>
+	<button
+		class="btn btn-dark mt-3"
+		on:click={() => {
+			positionTo.update((v) => new Position());
+			goto('/client/order');
+		}}>Отмена</button
+	>
+</ComponentAuth>

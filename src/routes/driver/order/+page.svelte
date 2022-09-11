@@ -17,9 +17,8 @@
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
 	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import { updateCurrentUser } from 'firebase/auth';
-	import { get_all_dirty_from_scope } from 'svelte/internal';
+	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 
-	let isLogin = false;
 	let user;
 	let order = new Order();
 	let mapOrders = new Map();
@@ -29,7 +28,6 @@
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
 				user = auth;
-				isLogin = true;
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
 				onValue(query(child(ref(db), 'orders')), (s) => {
 					mapOrders = s.val();
@@ -43,7 +41,7 @@
 	});
 </script>
 
-{#if isLogin}
+<ComponentAuth>
 	<div class="d-flex justify-content-between align-items-center m-3">
 		<h3>Все заказы</h3>
 	</div>
@@ -74,4 +72,4 @@
 			</div>
 		</ComponentOrder>
 	{/each}
-{/if}
+</ComponentAuth>

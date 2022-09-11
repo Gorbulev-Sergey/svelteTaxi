@@ -15,8 +15,8 @@
 	import Order from '$lib/Order';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
 	import { isFormMakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
+	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 
-	let isLogin = false;
 	let user;
 	let order = new Order();
 	let mapOrders = new Map();
@@ -26,7 +26,6 @@
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
 				user = auth;
-				isLogin = true;
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
 				onValue(
 					query(child(ref(db), 'orders'), ...[orderByChild('clientUid'), equalTo(user.uid)]),
@@ -52,7 +51,7 @@
 	}
 </script>
 
-{#if isLogin}
+<ComponentAuth>
 	<div>
 		<div class="d-flex justify-content-between align-items-center m-3">
 			<h3>Мои заказы</h3>
@@ -130,4 +129,4 @@
 	{#each Object.entries(mapOrders) as [key, value], i}
 		<ComponentOrder order={value} {i} />
 	{/each}
-{/if}
+</ComponentAuth>

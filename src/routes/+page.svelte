@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { auth, db } from '$lib/firebase.js';
+	import { auth, db } from '$lib/scripts/firebase.js';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
@@ -8,7 +8,7 @@
 	let user;
 
 	onMount(() => {
-		goto('/order');
+		goto('/client/order');
 		// auth.onAuthStateChanged((auth) => {
 		// 	if (auth) {
 		// 		user = auth;

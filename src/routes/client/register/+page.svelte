@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { goto } from '$app/navigation';
-	import { auth, db } from '$lib/firebase.js';
+	import { auth, db } from '$lib/scripts/firebase.js';
 	import { updateProfile } from 'firebase/auth';
 	import { ref, child, get, set, push, remove } from 'firebase/database';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';

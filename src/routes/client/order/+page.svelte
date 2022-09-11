@@ -1,15 +1,27 @@
 <script>
 	import { onMount } from 'svelte';
-	import { auth, db } from '$lib/firebase';
+	import { auth, db } from '$lib/scripts/firebase';
 	import { goto } from '$app/navigation';
-	import { child, equalTo, onValue, orderByChild, push, query, ref } from 'firebase/database';
+	import {
+		child,
+		equalTo,
+		onValue,
+		orderByChild,
+		push,
+		query,
+		ref,
+		update
+	} from 'firebase/database';
 	import Order from '$lib/Order';
-	import { positionFrom, positionTo } from '$lib/components/MyData';
+	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
+	import { isFormMakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
 
 	let isLogin = false;
 	let user;
 	let order = new Order();
 	let mapOrders = new Map();
+	$: showForm = '';
+
 	onMount(() => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
@@ -24,6 +36,7 @@
 				);
 				positionFrom.subscribe((v) => (order.positionFrom = v));
 				positionTo.subscribe((v) => (order.positionTo = v));
+				isFormMakeOrderShow.subscribe((v) => (showForm = v));
 			} else {
 				goto('/client/login');
 			}
@@ -31,7 +44,7 @@
 	});
 	function createOrder() {
 		if (order.positionFrom && order.positionTo && order.goods && order.car) {
-			order.clientUid = auth.currentUser?.uid;
+			order.client = auth.currentUser?.uid;
 			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString(); //
 			push(ref(db, 'orders'), order);
 			order = new Order();
@@ -48,23 +61,37 @@
 			</button>
 		</div>
 
-		<div class="collapse bg-white rounded p-3 mb-3" id="collapseForm">
+		<div class="collapse bg-white rounded p-3 mb-3 {showForm}" id="collapseForm">
 			<h4 class="mb-3">Заказать автомобиль</h4>
 			<div class="input-group mb-3">
 				<input
 					class="form-control"
 					bind:value={order.positionFrom.address}
 					placeholder="откуда забирать товар"
+					readonly
 				/>
-				<button class="btn btn-dark" on:click={() => goto('/order/mapFrom')}>...</button>
+				<button
+					class="btn btn-dark"
+					on:click={() => {
+						isFormMakeOrderShow.update((v) => 'show');
+						goto('/client/order/mapFrom');
+					}}>...</button
+				>
 			</div>
 			<div class="input-group mb-3">
 				<input
 					class="form-control"
 					bind:value={order.positionTo.address}
 					placeholder="куда везти товар"
+					readonly
 				/>
-				<button class="btn btn-dark" on:click={() => goto('/order/mapTo')}>...</button>
+				<button
+					class="btn btn-dark"
+					on:click={() => {
+						isFormMakeOrderShow.update((v) => 'show');
+						goto('/client/order/mapTo');
+					}}>...</button
+				>
 			</div>
 			<input
 				class="form-control mb-3"
@@ -84,6 +111,7 @@
 				data-bs-target="#collapseForm"
 				on:click={() => {
 					createOrder();
+					isFormMakeOrderShow.update((v) => '');
 					order = new Order();
 				}}>Сделать заказ</button
 			>
@@ -91,28 +119,15 @@
 				class="btn btn-dark mb-1"
 				data-bs-toggle="collapse"
 				data-bs-target="#collapseForm"
-				on:click={() => (order = new Order())}>Отмена</button
+				on:click={() => {
+					isFormMakeOrderShow.update((v) => '');
+					order = new Order();
+				}}>Отмена</button
 			>
 		</div>
 	</div>
 
 	{#each Object.entries(mapOrders) as [key, value], i}
-		<div class="d-flex align-items-start bg-white p-3 rounded mb-2">
-			<div class="badge bg-dark mt-1 me-2">{i + 1}</div>
-			<div>
-				<div>
-					<i>откуда: </i><span class="me-1">{value.positionFrom.address},</span>
-					<i>куда: </i><span>{value.positionTo.address}</span>
-				</div>
-				<div>
-					<i>что везти: </i><span class="me-1">{value.goods},</span>
-					<i>автомобиль: </i><span>{value.car}</span>
-				</div>
-				<div>
-					<i>дата доставки: </i><span class="me-1">{value.dateOfDelivery}</span>
-					<span>{value.driver == null ? '' : value.driver}</span>
-				</div>
-			</div>
-		</div>
+		<ComponentOrder order={value} {i} />
 	{/each}
 {/if}

@@ -1,11 +1,12 @@
 <script>
 	// @ts-nocheck
-	import { goto } from '$app/navigation';
-	import { positionTo } from '$lib/components/MyData';
-	import Position from '$lib/Position';
-	import { onMount } from 'svelte';
 
-	let myPositionTo = new Position();
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { positionFrom } from '$lib/scripts/myData';
+	import Position from '$lib/Position';
+
+	let myPositionFrom = new Position();
 	let currentPosition = [55.76, 37.64];
 	let myMap, myPlacemark, geolocation;
 
@@ -22,24 +23,9 @@
 			}
 		);
 
-		// положение, вычисленное по ip пользователя
-		geolocation
-			.get({
-				provider: 'yandex',
-				mapStateAutoApply: true
-			})
-			.then(function (result) {
-				// Красным цветом пометим положение, вычисленное через ip.
-				result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-				result.geoObjects.get(0).properties.set({
-					balloonContentBody: 'Мое местоположение'
-				});
-				myMap.geoObjects.add(result.geoObjects);
-			});
-
 		// Слушаем клик на карте.
 		myMap.events.add('click', function (e) {
-			var coords = e.get('coords');
+			let coords = e.get('coords');
 
 			// Если метка уже создана – просто передвигаем ее.
 			if (myPlacemark) {
@@ -92,12 +78,40 @@
 					// В качестве контента балуна задаем строку с адресом объекта.
 					balloonContent: firstGeoObject.getAddressLine()
 				});
-				myPositionTo = new Position(
+				myPositionFrom = new Position(
 					firstGeoObject.getAddressLine(),
 					myPlacemark.geometry.getCoordinates()
 				);
 			});
 		}
+
+		// Сравним положение, вычисленное по ip пользователя и
+		// положение, вычисленное средствами браузера.
+		geolocation
+			.get({
+				provider: 'yandex',
+				mapStateAutoApply: true
+			})
+			.then(function (result) {
+				// Красным цветом пометим положение, вычисленное через ip.
+				result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+				result.geoObjects.get(0).properties.set({
+					balloonContentBody: 'Мое местоположение'
+				});
+				myMap.geoObjects.add(result.geoObjects);
+			});
+
+		// geolocation
+		// 	.get({
+		// 		provider: 'browser',
+		// 		mapStateAutoApply: true
+		// 	})
+		// 	.then(function (result) {
+		// 		// Синим цветом пометим положение, полученное через браузер.
+		// 		// Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+		// 		result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+		// 		myMap.geoObjects.add(result.geoObjects);
+		// 	});
 	}
 
 	onMount(() => {
@@ -112,21 +126,22 @@
 		type="text/javascript"></script>
 </svelte:head>
 
-<h4 class="my-3">Куда везти товар</h4>
+<h4 class="my-3">Откуда забирать товар</h4>
 <div class="rounded">
 	<div id="map" class="rounded" style="width: 100%; height:80vh" />
 </div>
+
 <button
 	class="btn btn-dark mt-3 me-1"
 	on:click={() => {
-		positionTo.update((v) => myPositionTo);
-		goto('/order');
+		positionFrom.update((v) => myPositionFrom);
+		goto('/client/order');
 	}}>Подтвердить выбор</button
 >
 <button
 	class="btn btn-dark mt-3"
 	on:click={() => {
-		positionTo.update((v) => new Position());
-		goto('/order');
+		positionFrom.update((v) => new Position());
+		goto('/client/order');
 	}}>Отмена</button
 >

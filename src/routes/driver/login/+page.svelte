@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { auth } from '$lib/firebase.js';
+	import { auth } from '$lib/scripts/firebase.js';
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';

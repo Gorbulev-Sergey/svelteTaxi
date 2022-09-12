@@ -14,7 +14,7 @@
 	} from 'firebase/database';
 	import Order from '$lib/Order';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
-	import { isFormMakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
+	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 
 	let user;
@@ -35,7 +35,7 @@
 				);
 				positionFrom.subscribe((v) => (order.positionFrom = v));
 				positionTo.subscribe((v) => (order.positionTo = v));
-				isFormMakeOrderShow.subscribe((v) => (showForm = v));
+				MakeOrderShow.subscribe((v) => (showForm = v));
 			} else {
 				goto('/client/login');
 			}
@@ -72,7 +72,7 @@
 				<button
 					class="btn btn-dark"
 					on:click={() => {
-						isFormMakeOrderShow.update((v) => 'show');
+						MakeOrderShow.update((v) => 'show');
 						goto('/client/order/mapFrom');
 					}}>...</button
 				>
@@ -87,7 +87,7 @@
 				<button
 					class="btn btn-dark"
 					on:click={() => {
-						isFormMakeOrderShow.update((v) => 'show');
+						MakeOrderShow.update((v) => 'show');
 						goto('/client/order/mapTo');
 					}}>...</button
 				>
@@ -110,7 +110,7 @@
 				data-bs-target="#collapseForm"
 				on:click={() => {
 					createOrder();
-					isFormMakeOrderShow.update((v) => '');
+					MakeOrderShow.update((v) => '');
 					order = new Order();
 				}}>Сделать заказ</button
 			>
@@ -119,7 +119,7 @@
 				data-bs-toggle="collapse"
 				data-bs-target="#collapseForm"
 				on:click={() => {
-					isFormMakeOrderShow.update((v) => '');
+					MakeOrderShow.update((v) => '');
 					order = new Order();
 				}}>Отмена</button
 			>

@@ -28,7 +28,7 @@
 				user = auth;
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
 				onValue(
-					query(child(ref(db), 'orders'), ...[orderByChild('clientUid'), equalTo(user.uid)]),
+					query(child(ref(db), 'orders'), ...[orderByChild('client'), equalTo(user.uid)]),
 					(s) => {
 						mapOrders = s.val();
 					}

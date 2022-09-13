@@ -29,8 +29,10 @@
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
 				onValue(
 					query(child(ref(db), 'orders'), ...[orderByChild('client'), equalTo(user.uid)]),
-					(s) => {
-						mapOrders = s.val();
+					(snap) => {
+						if (snap.exists()) {
+							mapOrders = snap.val();
+						}
 					}
 				);
 				positionFrom.subscribe((v) => (order.positionFrom = v));

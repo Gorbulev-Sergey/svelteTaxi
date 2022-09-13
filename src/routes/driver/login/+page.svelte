@@ -35,11 +35,6 @@
 </script>
 
 {#if !isLogin}
-	<div class="position-fixed mt-3 text-center w-100" style="left:0">
-		<button class="btn btn-sm btn-light" on:click={() => goto('/client/login')}
-			>Вход для клиентов</button
-		>
-	</div>
 	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
 		<div class="bg-light p-3 rounded text-center">
 			<h4 class="mb-3">Вход для водителей</h4>

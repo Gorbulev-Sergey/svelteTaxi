@@ -46,9 +46,6 @@
 
 {#if !isRegister}
 	<div class="position-fixed mt-3 text-center w-100" style="left:0">
-		<button class="btn btn-sm btn-light" on:click={() => goto('/driver/register')}
-			>Регистрация водителей</button
-		>
 		<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
 			<div class="bg-light p-3 rounded text-center">
 				<h4 class="mb-3">Зарегистрироваться</h4>

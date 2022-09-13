@@ -44,8 +44,8 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex justify-content-between align-items-center mx-1 my-3">
-		<h3>Все заказы</h3>
+	<div class="d-flex justify-content-between align-items-center m-3">
+		<h3 class="p-0 m-0">Все заказы</h3>
 	</div>
 
 	{#each Object.entries(mapOrders) as [key, value], i}

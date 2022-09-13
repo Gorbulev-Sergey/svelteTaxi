@@ -37,8 +37,17 @@
 					client.value.password = null; // Убираем пароль
 					set(ref(db, 'clients/' + user.uid), client.value);
 				})
-				.catch(error)
-				.finally(() => {});
+				.catch((error) => {
+					if ((error.code = 'auth/email-already-in-use')) {
+						//console.log('Такой пользователь уже есть');
+						signInWithEmailAndPassword(auth, client.value.email, client.value.password).then(
+							(credential) => {
+								user = credential.user;
+							}
+						);
+					}
+				})
+				.finally(credential);
 		}
 	}
 </script>

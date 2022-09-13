@@ -29,15 +29,20 @@
 			driver.value.email.includes('.') &&
 			driver.value.password.replaceAll(' ', '').length > 3
 		) {
-			createUserWithEmailAndPassword(auth, driver.value.email, driver.value.password).then(
-				(credential) => {
+			createUserWithEmailAndPassword(auth, driver.value.email, driver.value.password)
+				.then((credential) => {
 					user = credential.user;
 					user.displayName = driver.value.name;
 					// Добавляем клиента в базу данных
 					driver.value.password = null; // Убираем пароль
 					set(ref(db, 'drivers/' + user.uid), driver.value);
-				}
-			);
+				})
+				.catch((error) => {
+					if ((error.code = 'auth/email-already-in-use')) {
+						console.log('Такой пользователь уже есть');
+					}
+				})
+				.finally();
 		}
 	}
 </script>

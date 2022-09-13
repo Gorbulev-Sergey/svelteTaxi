@@ -30,7 +30,9 @@
 				user = auth;
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
 				onValue(query(child(ref(db), 'orders')), (s) => {
-					mapOrders = s.val();
+					if (s.exists()) {
+						mapOrders = s.val();
+					}
 				});
 				positionFrom.subscribe((v) => (order.positionFrom = v));
 				positionTo.subscribe((v) => (order.positionTo = v));

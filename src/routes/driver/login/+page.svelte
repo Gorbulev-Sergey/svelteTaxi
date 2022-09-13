@@ -7,7 +7,6 @@
 	import Driver from '$lib/Driver';
 
 	let user;
-	let isLogin = false;
 	let driver = new Driver();
 
 	onMount(() => {
@@ -27,35 +26,32 @@
 			signInWithEmailAndPassword(auth, driver.value.email, driver.value.password).then(
 				(credential) => {
 					user = credential.user;
-					isLogin = true;
 				}
 			);
 		}
 	}
 </script>
 
-{#if !isLogin}
-	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
-		<div class="bg-light p-3 rounded text-center">
-			<h4 class="mb-3">Вход для водителей</h4>
-			<input
-				class="form-control mb-3"
-				bind:value={driver.value.email}
-				placeholder="email"
-				type="email"
-			/>
-			<input
-				class="form-control mb-3"
-				bind:value={driver.value.password}
-				placeholder="пароль"
-				type="password"
-			/>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
+	<div class="bg-light p-3 rounded text-center">
+		<h4 class="mb-3">Вход для водителей</h4>
+		<input
+			class="form-control mb-3"
+			bind:value={driver.value.email}
+			placeholder="email"
+			type="email"
+		/>
+		<input
+			class="form-control mb-3"
+			bind:value={driver.value.password}
+			placeholder="пароль"
+			type="password"
+		/>
 
-			<button class="btn btn-dark mb-1" on:click={() => loginDriver()}>Войти</button>
-			<br />
-			<button class="btn btn-sm btn-light" on:click={() => goto('/driver/register')}
-				>У меня ещё нет аккаунта</button
-			>
-		</div>
+		<button class="btn btn-dark mb-1" on:click={() => loginDriver()}>Войти</button>
+		<br />
+		<button class="btn btn-sm btn-light" on:click={() => goto('/driver/register')}
+			>У меня ещё нет аккаунта</button
+		>
 	</div>
-{/if}
+</div>

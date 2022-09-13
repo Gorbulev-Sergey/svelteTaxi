@@ -9,7 +9,6 @@
 	import Driver from '$lib/Driver';
 
 	let user;
-	let isRegister = false;
 	let driver = new Driver();
 
 	onMount(() => {
@@ -33,7 +32,6 @@
 			createUserWithEmailAndPassword(auth, driver.value.email, driver.value.password).then(
 				(credential) => {
 					user = credential.user;
-					isRegister = true;
 					user.displayName = driver.value.name;
 					// Добавляем клиента в базу данных
 					driver.value.password = null; // Убираем пароль
@@ -44,31 +42,28 @@
 	}
 </script>
 
-{#if !isRegister}
-	<div class="position-fixed mt-3 text-center w-100" style="left:0">
-		<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
-			<div class="bg-light p-3 rounded text-center">
-				<h4 class="mb-3">Регистрация водителей</h4>
-				<input class="form-control mb-3" bind:value={driver.value.name} placeholder="ваше имя" />
-				<input
-					class="form-control mb-3"
-					bind:value={driver.value.email}
-					placeholder="email"
-					type="email"
-				/>
-				<input
-					class="form-control mb-3"
-					bind:value={driver.value.password}
-					placeholder="пароль"
-					type="password"
-				/>
-				<button class="btn btn-dark mb-1" on:click={() => createDriver()}>Зарегистрироваться</button
-				>
-				<br />
-				<button class="btn btn-sm btn-light " on:click={() => goto('/driver/login')}
-					>У меня есть аккаунт</button
-				>
-			</div>
+<div class="position-fixed mt-3 text-center w-100" style="left:0">
+	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
+		<div class="bg-light p-3 rounded text-center">
+			<h4 class="mb-3">Регистрация водителей</h4>
+			<input class="form-control mb-3" bind:value={driver.value.name} placeholder="ваше имя" />
+			<input
+				class="form-control mb-3"
+				bind:value={driver.value.email}
+				placeholder="email"
+				type="email"
+			/>
+			<input
+				class="form-control mb-3"
+				bind:value={driver.value.password}
+				placeholder="пароль"
+				type="password"
+			/>
+			<button class="btn btn-dark mb-1" on:click={() => createDriver()}>Зарегистрироваться</button>
+			<br />
+			<button class="btn btn-sm btn-light " on:click={() => goto('/driver/login')}
+				>У меня есть аккаунт</button
+			>
 		</div>
 	</div>
-{/if}
+</div>

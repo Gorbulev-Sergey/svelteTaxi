@@ -9,7 +9,6 @@
 	import Client from '$lib/Client';
 
 	let user;
-	let isRegister = false;
 	let client = new Client();
 
 	onMount(() => {
@@ -33,7 +32,6 @@
 			createUserWithEmailAndPassword(auth, client.value.email, client.value.password).then(
 				(credential) => {
 					user = credential.user;
-					isRegister = true;
 					user.displayName = client.value.name;
 					// Добавляем клиента в базу данных
 					client.value.password = null; // Убираем пароль
@@ -44,31 +42,28 @@
 	}
 </script>
 
-{#if !isRegister}
-	<div class="position-fixed mt-3 text-center w-100" style="left:0">
-		<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
-			<div class="bg-light p-3 rounded text-center">
-				<h4 class="mb-3">Зарегистрироваться</h4>
-				<input class="form-control mb-3" bind:value={client.value.name} placeholder="ваше имя" />
-				<input
-					class="form-control mb-3"
-					bind:value={client.value.email}
-					placeholder="email"
-					type="email"
-				/>
-				<input
-					class="form-control mb-3"
-					bind:value={client.value.password}
-					placeholder="пароль"
-					type="password"
-				/>
-				<button class="btn btn-dark mb-1" on:click={() => createClient()}>Зарегистрироваться</button
-				>
-				<br />
-				<button class="btn btn-sm btn-light " on:click={() => goto('/client/login')}
-					>У меня есть аккаунт</button
-				>
-			</div>
+<div class="position-fixed mt-3 text-center w-100" style="left:0">
+	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
+		<div class="bg-light p-3 rounded text-center">
+			<h4 class="mb-3">Зарегистрироваться</h4>
+			<input class="form-control mb-3" bind:value={client.value.name} placeholder="ваше имя" />
+			<input
+				class="form-control mb-3"
+				bind:value={client.value.email}
+				placeholder="email"
+				type="email"
+			/>
+			<input
+				class="form-control mb-3"
+				bind:value={client.value.password}
+				placeholder="пароль"
+				type="password"
+			/>
+			<button class="btn btn-dark mb-1" on:click={() => createClient()}>Зарегистрироваться</button>
+			<br />
+			<button class="btn btn-sm btn-light " on:click={() => goto('/client/login')}
+				>У меня есть аккаунт</button
+			>
 		</div>
 	</div>
-{/if}
+</div>

@@ -2,26 +2,14 @@
 	// @ts-nocheck
 	import { goto } from '$app/navigation';
 	import { auth, db } from '$lib/scripts/firebase.js';
-	import { updateProfile } from 'firebase/auth';
-	import { ref, child, get, set, push, remove } from 'firebase/database';
+	import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+	import { ref, child, get, set, push, remove, onValue } from 'firebase/database';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import Client from '$lib/Client';
 
-	let user;
 	let client = new Client();
 
-	onMount(() => {
-		auth.onAuthStateChanged((auth) => {
-			if (auth) {
-				// После создания пользователя, добавляем в его профиль имя
-				updateProfile(auth.currentUser, {
-					displayName: client.value.name
-				});
-				goto('/');
-			}
-		});
-	});
 	function createClient() {
 		if (
 			client.value.name.replaceAll(' ', '').length > 0 &&
@@ -31,23 +19,33 @@
 		) {
 			createUserWithEmailAndPassword(auth, client.value.email, client.value.password)
 				.then((credential) => {
-					user = credential.user;
-					user.displayName = client.value.name;
+					// Если новый водитель успешно создался в auth, то
 					// Добавляем клиента в базу данных
 					client.value.password = null; // Убираем пароль
-					set(ref(db, 'clients/' + user.uid), client.value);
+					set(ref(db, 'clients/' + credential.user.uid), client.value);
+					// После создания пользователя, добавляем в его профиль имя
+					updateProfile(auth.currentUser, {
+						displayName: client.value.name
+					});
 				})
 				.catch((error) => {
 					if ((error.code = 'auth/email-already-in-use')) {
-						//console.log('Такой пользователь уже есть');
+						// Если такой пользователь в auth уже есть, то входим
 						signInWithEmailAndPassword(auth, client.value.email, client.value.password).then(
 							(credential) => {
-								user = credential.user;
+								onValue(child(ref(db), `clients/${credential.user.uid}`), (snap) => {
+									if (!snap.exists()) {
+										// Если нет такого клиента
+										// Добавляем клиента в базу данных
+										client.value.password = null; // Убираем пароль
+										set(ref(db, 'clients/' + credential.user.uid), client.value);
+									}
+								});
 							}
 						);
 					}
 				})
-				.finally(credential);
+				.finally(() => goto('/'));
 		}
 	}
 </script>

@@ -29,15 +29,16 @@
 			client.value.email.includes('.') &&
 			client.value.password.replaceAll(' ', '').length > 3
 		) {
-			createUserWithEmailAndPassword(auth, client.value.email, client.value.password).then(
-				(credential) => {
+			createUserWithEmailAndPassword(auth, client.value.email, client.value.password)
+				.then((credential) => {
 					user = credential.user;
 					user.displayName = client.value.name;
 					// Добавляем клиента в базу данных
 					client.value.password = null; // Убираем пароль
 					set(ref(db, 'clients/' + user.uid), client.value);
-				}
-			);
+				})
+				.catch(error)
+				.finally(() => {});
 		}
 	}
 </script>

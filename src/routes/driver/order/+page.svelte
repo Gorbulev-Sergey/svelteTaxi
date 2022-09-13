@@ -44,7 +44,7 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex justify-content-between align-items-center m-3">
+	<div class="d-flex justify-content-between align-items-center m-2">
 		<h3>Все заказы</h3>
 	</div>
 

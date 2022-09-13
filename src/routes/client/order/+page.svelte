@@ -55,7 +55,7 @@
 
 <ComponentAuth>
 	<div>
-		<div class="d-flex justify-content-between align-items-center m-3">
+		<div class="d-flex justify-content-between align-items-center m-2">
 			<h3>Мои заказы</h3>
 			<button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#collapseForm">
 				Добавить заказ

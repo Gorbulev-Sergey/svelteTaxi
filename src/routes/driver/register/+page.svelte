@@ -5,62 +5,57 @@
 	import { updateProfile } from 'firebase/auth';
 	import { ref, child, get, set, push, remove } from 'firebase/database';
 	import { createUserWithEmailAndPassword } from 'firebase/auth';
-	import { onMount } from 'svelte';
 	import Driver from '$lib/Driver';
 
-	let user;
 	let driver = new Driver();
 
-	onMount(() => {
-		auth.onAuthStateChanged((auth) => {
-			if (auth) {
-				// После создания пользователя, добавляем в его профиль имя
-				updateProfile(auth.currentUser, {
-					displayName: driver.value.name
-				});
-				goto('/driver/order');
-			}
-		});
-	});
 	function createDriver() {
 		if (
-			driver.value.name.replaceAll(' ', '').length > 0 &&
-			driver.value.email.includes('@') &&
-			driver.value.email.includes('.') &&
-			driver.value.password.replaceAll(' ', '').length > 3
+			driver.name.replaceAll(' ', '').length > 0 &&
+			driver.email.includes('@') &&
+			driver.email.includes('.') &&
+			driver.password.replaceAll(' ', '').length > 3
 		) {
-			createUserWithEmailAndPassword(auth, driver.value.email, driver.value.password)
+			createUserWithEmailAndPassword(auth, driver.email, driver.password)
 				.then((credential) => {
-					user = credential.user;
-					user.displayName = driver.value.name;
-					// Добавляем клиента в базу данных
-					driver.value.password = null; // Убираем пароль
-					set(ref(db, 'drivers/' + user.uid), driver.value);
+					// Если новый пользователь успешно создался в auth, то
+					// Добавляем водителя в базу данных
+					driver.password = null; // Убираем пароль
+					set(ref(db, 'drivers/' + credential.user.uid), driver);
+					// После создания пользователя, добавляем в его профиль имя
+					updateProfile(auth.currentUser, {
+						displayName: driver.name
+					});
 				})
 				.catch((error) => {
 					if ((error.code = 'auth/email-already-in-use')) {
-						console.log('Такой пользователь уже есть');
+						// Если такой пользователь в auth уже есть, то входим
+						signInWithEmailAndPassword(auth, driver.email, driver.password).then((credential) => {
+							onValue(child(ref(db), `drivers/${credential.user.uid}`), (snap) => {
+								if (!snap.exists()) {
+									// Если нет такого водителя
+									// Добавляем водителя в базу данных
+									driver.password = null; // Убираем пароль
+									set(ref(db, 'drivers/' + credential.user.uid), driver);
+								}
+							});
+						});
 					}
 				})
-				.finally();
+				.finally(() => goto('/'));
 		}
 	}
 </script>
 
-<div class="position-fixed mt-3 text-center w-100" style="left:0">
+<div class="position-fixed my-3 text-center w-100" style="left:0">
 	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
 		<div class="bg-light p-3 rounded text-center">
 			<h4 class="mb-3">Регистрация водителей</h4>
-			<input class="form-control mb-3" bind:value={driver.value.name} placeholder="ваше имя" />
+			<input class="form-control mb-3" bind:value={driver.name} placeholder="ваше имя" />
+			<input class="form-control mb-3" bind:value={driver.email} placeholder="email" type="email" />
 			<input
 				class="form-control mb-3"
-				bind:value={driver.value.email}
-				placeholder="email"
-				type="email"
-			/>
-			<input
-				class="form-control mb-3"
-				bind:value={driver.value.password}
+				bind:value={driver.password}
 				placeholder="пароль"
 				type="password"
 			/>

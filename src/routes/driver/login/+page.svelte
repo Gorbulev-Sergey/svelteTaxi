@@ -19,15 +19,13 @@
 
 	function loginDriver() {
 		if (
-			driver.value.email.includes('@') &&
-			driver.value.email.includes('.') &&
-			driver.value.password.replaceAll(' ', '').length > 3
+			driver.email.includes('@') &&
+			driver.email.includes('.') &&
+			driver.password.replaceAll(' ', '').length > 3
 		) {
-			signInWithEmailAndPassword(auth, driver.value.email, driver.value.password).then(
-				(credential) => {
-					user = credential.user;
-				}
-			);
+			signInWithEmailAndPassword(auth, driver.email, driver.password).then((credential) => {
+				user = credential.user;
+			});
 		}
 	}
 </script>
@@ -35,15 +33,10 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
 	<div class="bg-light p-3 rounded text-center">
 		<h4 class="mb-3">Вход для водителей</h4>
+		<input class="form-control mb-3" bind:value={driver.email} placeholder="email" type="email" />
 		<input
 			class="form-control mb-3"
-			bind:value={driver.value.email}
-			placeholder="email"
-			type="email"
-		/>
-		<input
-			class="form-control mb-3"
-			bind:value={driver.value.password}
+			bind:value={driver.password}
 			placeholder="пароль"
 			type="password"
 		/>

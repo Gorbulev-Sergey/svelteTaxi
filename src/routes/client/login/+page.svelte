@@ -20,15 +20,13 @@
 
 	function loginClient() {
 		if (
-			client.value.email.includes('@') &&
-			client.value.email.includes('.') &&
-			client.value.password.replaceAll(' ', '').length > 3
+			client.email.includes('@') &&
+			client.email.includes('.') &&
+			client.password.replaceAll(' ', '').length > 3
 		) {
-			signInWithEmailAndPassword(auth, client.value.email, client.value.password).then(
-				(credential) => {
-					user = credential.user;
-				}
-			);
+			signInWithEmailAndPassword(auth, client.email, client.password).then((credential) => {
+				user = credential.user;
+			});
 		}
 	}
 </script>
@@ -36,15 +34,10 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
 	<div class="bg-light p-3 rounded text-center">
 		<h4 class="mb-3">Добро пожаловать</h4>
+		<input class="form-control mb-3" bind:value={client.email} placeholder="email" type="email" />
 		<input
 			class="form-control mb-3"
-			bind:value={client.value.email}
-			placeholder="email"
-			type="email"
-		/>
-		<input
-			class="form-control mb-3"
-			bind:value={client.value.password}
+			bind:value={client.password}
 			placeholder="пароль"
 			type="password"
 		/>

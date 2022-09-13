@@ -1,12 +1,9 @@
 export default class Client {
 	constructor() {
-		this.key = '';
-		this.value = {
-			name: '',
-			phone: '',
-			email: '',
-			password: '',
-			isOnline: false
-		};
+		this.name = '';
+		this.phone = '';
+		this.email = '';
+		this.password = '';
+		this.isOnline = false;
 	}
 }

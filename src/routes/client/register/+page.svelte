@@ -2,9 +2,12 @@
 	// @ts-nocheck
 	import { goto } from '$app/navigation';
 	import { auth, db } from '$lib/scripts/firebase.js';
-	import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+	import {
+		createUserWithEmailAndPassword,
+		signInWithEmailAndPassword,
+		updateProfile
+	} from 'firebase/auth';
 	import { ref, child, get, set, push, remove, onValue } from 'firebase/database';
-	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import Client from '$lib/Client';
 
 	let client = new Client();

@@ -37,7 +37,7 @@
 				positionFrom.subscribe((v) => (order.positionFrom = v));
 				positionTo.subscribe((v) => (order.positionTo = v));
 			} else {
-				goto('/client/login');
+				goto('/driver/login');
 			}
 		});
 	});

@@ -19,7 +19,7 @@
 				updateProfile(auth.currentUser, {
 					displayName: driver.value.name
 				});
-				goto('/');
+				goto('/driver/order');
 			}
 		});
 	});

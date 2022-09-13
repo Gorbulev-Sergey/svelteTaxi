@@ -13,7 +13,7 @@
 	onMount(() => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
-				goto('/');
+				goto('/driver/order');
 			}
 		});
 	});
@@ -41,7 +41,7 @@
 		>
 	</div>
 	<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh">
-		<div class="bg-light p-3 rounded text-center" style="min-width: 470px;">
+		<div class="bg-light p-3 rounded text-center">
 			<h4 class="mb-3">Вход для водителей</h4>
 			<input
 				class="form-control mb-3"

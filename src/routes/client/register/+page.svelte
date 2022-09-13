@@ -29,6 +29,7 @@
 					updateProfile(auth.currentUser, {
 						displayName: client.name
 					});
+					goto('/client/order');
 				})
 				.catch((error) => {
 					if ((error.code = 'auth/email-already-in-use')) {
@@ -40,12 +41,12 @@
 									// Добавляем клиента в базу данных
 									client.password = null; // Убираем пароль
 									set(ref(db, 'clients/' + credential.user.uid), client);
+									goto('/client/order');
 								}
 							});
 						});
 					}
-				})
-				.finally(() => goto('/'));
+				});
 		}
 	}
 </script>

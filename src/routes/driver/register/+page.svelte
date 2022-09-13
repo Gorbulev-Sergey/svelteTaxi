@@ -29,6 +29,7 @@
 					updateProfile(auth.currentUser, {
 						displayName: driver.name
 					});
+					goto('/driver/order');
 				})
 				.catch((error) => {
 					if ((error.code = 'auth/email-already-in-use')) {
@@ -40,12 +41,12 @@
 									// Добавляем водителя в базу данных
 									driver.password = null; // Убираем пароль
 									set(ref(db, 'drivers/' + credential.user.uid), driver);
+									goto('/driver/order');
 								}
 							});
 						});
 					}
-				})
-				.finally(() => goto('/driver/order'));
+				});
 		}
 	}
 </script>

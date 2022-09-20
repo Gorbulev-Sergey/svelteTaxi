@@ -25,10 +25,38 @@
 	let mapOrdersFiltered = new Map();
 	$: showForm = '';
 
-	let ordersForSelect = {
+	let ordersForFilterWho = {
 		selected: 'все',
 		orders: ['все', 'мои']
 	};
+	let ordersForFilterStatus = {
+		selected: '',
+		orders: ['', 'в работе', 'завершён']
+	};
+
+	function filter(who, status) {
+		let mapOrdersForFilter = new Map();
+		switch (who) {
+			case 'все':
+				mapOrdersForFilter = mapOrders;
+				break;
+			case 'мои':
+				mapOrdersForFilter = Object.fromEntries(
+					[...Object.entries(mapOrders)].filter(([k, v]) => v.driver?.uid == auth.currentUser?.uid)
+				);
+				break;
+		}
+		switch (status) {
+			case '':
+				break;
+			case status:
+				mapOrdersForFilter = Object.fromEntries(
+					[...Object.entries(mapOrdersForFilter)].filter(([k, v]) => v.status == status)
+				);
+				break;
+		}
+		return mapOrdersForFilter;
+	}
 
 	onMount(() => {
 		auth.onAuthStateChanged((auth) => {
@@ -38,7 +66,7 @@
 				onValue(query(child(ref(db), 'orders')), (s) => {
 					if (s.exists()) {
 						mapOrders = s.val();
-						mapOrdersFiltered = s.val();
+						mapOrdersFiltered = filter(ordersForFilterWho.selected, ordersForFilterStatus.selected);
 					}
 				});
 				positionFrom.subscribe((v) => (order.positionFrom = v));
@@ -53,33 +81,76 @@
 <ComponentAuth>
 	<div class="d-flex justify-content-between align-items-center mx-3 mt-2 mb-3">
 		<h3 class="p-0 m-0">Заказы</h3>
-		<div class="dropdown">
-			<button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-				<span class="me-2">{ordersForSelect.selected}</span>
-				<i class="fa-solid fa-angle-down" />
-			</button>
-			<div class="dropdown-menu">
-				{#each ordersForSelect.orders as item}
-					<button
-						class="dropdown-item"
-						on:click={() => {
-							ordersForSelect.selected = item;
-							switch (item) {
-								case 'все':
-									mapOrdersFiltered = mapOrders;
-									break;
-								case 'мои':
-									mapOrdersFiltered = Object.fromEntries(
-										[...Object.entries(mapOrdersFiltered)].filter(
-											([k, v]) => v.driver?.uid == auth.currentUser?.uid
-										)
+		<div class="d-flex align-items-center">
+			<!--Первый фильтр-->
+			<div class="dropdown me-1">
+				<div class="btn-group btn-group-sm">
+					<button class="btn btn-dark">тип:</button>
+					<button class="btn btn-sm btn-light rounded-end" data-bs-toggle="dropdown">
+						<span class="me-2">{ordersForFilterWho.selected}</span>
+						<i class="fa-solid fa-angle-down" />
+					</button>
+					<div class="dropdown-menu">
+						{#each ordersForFilterWho.orders as item}
+							<button
+								class="dropdown-item"
+								on:click={() => {
+									ordersForFilterWho.selected = item;
+									// switch (item) {
+									// 	case 'все':
+									// 		mapOrdersFiltered = mapOrders;
+									// 		break;
+									// 	case 'мои':
+									// 		mapOrdersFiltered = Object.fromEntries(
+									// 			[...Object.entries(mapOrdersFiltered)].filter(
+									// 				([k, v]) => v.driver?.uid == auth.currentUser?.uid
+									// 			)
+									// 		);
+									// 		break;
+									// }
+									mapOrdersFiltered = filter(
+										ordersForFilterWho.selected,
+										ordersForFilterStatus.selected
 									);
-									break;
-							}
-							console.log(mapOrdersFiltered);
-						}}>{item}</button
-					>
-				{/each}
+								}}>{item}</button
+							>
+						{/each}
+					</div>
+				</div>
+			</div>
+			<!--Второй фильтр-->
+			<div class="dropdown">
+				<div class="btn-group btn-group-sm">
+					<button class="btn btn-dark">статус:</button>
+					<button class="btn btn-sm btn-light rounded-end" data-bs-toggle="dropdown">
+						<span class="me-2">{ordersForFilterStatus.selected}</span>
+						<i class="fa-solid fa-angle-down" />
+					</button>
+					<div class="dropdown-menu">
+						{#each ordersForFilterStatus.orders as item}
+							<button
+								class="dropdown-item"
+								on:click={() => {
+									ordersForFilterStatus.selected = item;
+									// switch (item) {
+									// 	case '':
+									// 		mapOrdersFiltered = mapOrders;
+									// 		break;
+									// 	case item:
+									// 		mapOrdersFiltered = Object.fromEntries(
+									// 			[...Object.entries(mapOrders)].filter(([k, v]) => v.status == item)
+									// 		);
+									// 		break;
+									// }
+									mapOrdersFiltered = filter(
+										ordersForFilterWho.selected,
+										ordersForFilterStatus.selected
+									);
+								}}>{item}</button
+							>
+						{/each}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

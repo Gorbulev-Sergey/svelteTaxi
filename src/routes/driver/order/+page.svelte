@@ -30,8 +30,8 @@
 		orders: ['все', 'мои']
 	};
 	let ordersForFilterStatus = {
-		selected: '',
-		orders: ['', 'в работе', 'завершён']
+		selected: 'все',
+		orders: ['все', 'в работе', 'завершён']
 	};
 
 	function filter(who, status) {
@@ -47,7 +47,7 @@
 				break;
 		}
 		switch (status) {
-			case '':
+			case 'все':
 				break;
 			case status:
 				mapOrdersForFilter = Object.fromEntries(

@@ -22,6 +22,7 @@
 	let user;
 	let order = new Order();
 	let mapOrders = new Map();
+	let mapOrdersFiltered = new Map();
 	$: showForm = '';
 
 	let ordersForSelect = {
@@ -37,6 +38,7 @@
 				onValue(query(child(ref(db), 'orders')), (s) => {
 					if (s.exists()) {
 						mapOrders = s.val();
+						mapOrdersFiltered = s.val();
 					}
 				});
 				positionFrom.subscribe((v) => (order.positionFrom = v));
@@ -62,6 +64,19 @@
 						class="dropdown-item"
 						on:click={() => {
 							ordersForSelect.selected = item;
+							switch (item) {
+								case 'все':
+									mapOrdersFiltered = mapOrders;
+									break;
+								case 'мои':
+									mapOrdersFiltered = Object.fromEntries(
+										[...Object.entries(mapOrdersFiltered)].filter(
+											([k, v]) => v.driver?.uid == auth.currentUser?.uid
+										)
+									);
+									break;
+							}
+							console.log(mapOrdersFiltered);
 						}}>{item}</button
 					>
 				{/each}
@@ -69,7 +84,7 @@
 		</div>
 	</div>
 
-	{#each Object.entries(mapOrders) as [key, value], i}
+	{#each Object.entries(mapOrdersFiltered) as [key, value], i}
 		<ComponentOrder order={value} {i}>
 			<div class="d-flex flex-column">
 				{#if !value.status}

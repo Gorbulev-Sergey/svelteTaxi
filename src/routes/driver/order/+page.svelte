@@ -24,6 +24,11 @@
 	let mapOrders = new Map();
 	$: showForm = '';
 
+	let ordersForSelect = {
+		selected: 'все',
+		orders: ['все', 'мои']
+	};
+
 	onMount(() => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
@@ -44,8 +49,24 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex justify-content-between align-items-center m-3">
-		<h3 class="p-0 m-0">Все заказы</h3>
+	<div class="d-flex justify-content-between align-items-center mx-3 mt-2 mb-3">
+		<h3 class="p-0 m-0">Заказы</h3>
+		<div class="dropdown">
+			<button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
+				<span class="me-2">{ordersForSelect.selected}</span>
+				<i class="fa-solid fa-angle-down" />
+			</button>
+			<div class="dropdown-menu">
+				{#each ordersForSelect.orders as item}
+					<button
+						class="dropdown-item"
+						on:click={() => {
+							ordersForSelect.selected = item;
+						}}>{item}</button
+					>
+				{/each}
+			</div>
+		</div>
 	</div>
 
 	{#each Object.entries(mapOrders) as [key, value], i}

@@ -81,7 +81,8 @@
 				<button
 					class="btn btn-light me-1"
 					data-bs-toggle="offcanvas"
-					data-bs-target="#offcanvasExample"><i class="fa-solid fa-bars" /></button
+					data-bs-target="#offcanvasExample"
+					data-bs-backdrop="false"><i class="fa-solid fa-bars" /></button
 				>
 				<h3 class="m-0 p-0">Мои заказы</h3>
 			</div>

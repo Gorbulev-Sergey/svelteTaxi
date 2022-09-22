@@ -79,7 +79,7 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex flex-column mx-3 mt-2 mb-3">
+	<div class="d-flex flex-column mx-3 mb-3">
 		<h3 class="p-0">Заказы</h3>
 		<div class="d-flex justify-content-end">
 			<!--Первый фильтр-->

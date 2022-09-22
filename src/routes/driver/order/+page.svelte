@@ -18,6 +18,7 @@
 	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import { updateCurrentUser } from 'firebase/auth';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
+	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
 
 	let user;
 	let order = new Order();
@@ -80,7 +81,7 @@
 
 <ComponentAuth>
 	<div class="d-flex flex-column mx-3 mb-3">
-		<h3 class="p-0">Заказы</h3>
+		<ComponentTitle title="Заказы" />
 		<div class="d-flex justify-content-start">
 			<!--Первый фильтр-->
 			<div class="dropdown me-1">

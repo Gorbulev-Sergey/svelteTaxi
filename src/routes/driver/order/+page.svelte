@@ -26,7 +26,7 @@
 	$: showForm = '';
 
 	let ordersForFilterWho = {
-		selected: 'все',
+		selected: 'мои',
 		orders: ['все', 'мои']
 	};
 	let ordersForFilterStatus = {
@@ -79,9 +79,9 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex justify-content-between align-items-center mx-3 mt-2 mb-3">
-		<h3 class="p-0 m-0">Заказы</h3>
-		<div class="d-flex align-items-center">
+	<div class="d-flex flex-column mx-3 mt-2 mb-3">
+		<h3 class="p-0">Заказы</h3>
+		<div class="d-flex justify-content-end">
 			<!--Первый фильтр-->
 			<div class="dropdown me-1">
 				<div class="btn-group btn-group-sm">

@@ -77,7 +77,14 @@
 <ComponentAuth>
 	<div class="d-flex flex-column mx-3 mb-3">
 		<div class="d-flex justify-content-between align-items-center mb-2">
-			<h3 class="m-0 p-0">Мои заказы</h3>
+			<div class="d-flex align-items-center">
+				<button
+					class="btn btn-outline-dark me-2"
+					data-bs-toggle="offcanvas"
+					data-bs-target="#offcanvasExample"><i class="fa-solid fa-bars" /></button
+				>
+				<h3 class="m-0 p-0">Мои заказы</h3>
+			</div>
 			<button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#collapseForm">
 				Добавить заказ
 			</button>

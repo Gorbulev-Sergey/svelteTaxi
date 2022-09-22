@@ -86,7 +86,7 @@
 				<h3 class="m-0 p-0">Мои заказы</h3>
 			</div>
 			<button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#collapseForm">
-				Добавить заказ
+				Добавить
 			</button>
 		</div>
 		<div class="d-flex justify-content-start">

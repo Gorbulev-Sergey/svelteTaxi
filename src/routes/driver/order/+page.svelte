@@ -81,7 +81,7 @@
 <ComponentAuth>
 	<div class="d-flex flex-column mx-3 mb-3">
 		<h3 class="p-0">Заказы</h3>
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-start">
 			<!--Первый фильтр-->
 			<div class="dropdown me-1">
 				<div class="btn-group btn-group-sm">

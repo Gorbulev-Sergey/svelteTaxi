@@ -82,7 +82,7 @@
 				Добавить заказ
 			</button>
 		</div>
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-start">
 			<!--Первый фильтр-->
 			<div class="dropdown">
 				<div class="btn-group btn-group-sm">

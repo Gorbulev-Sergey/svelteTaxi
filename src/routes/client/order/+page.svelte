@@ -75,11 +75,11 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex flex-column mx-3 mb-3">
-		<div class="d-flex justify-content-between align-items-center mb-2">
+	<div class="d-flex flex-column mx-2 mb-2">
+		<div class="d-flex justify-content-between align-items-center mb-3">
 			<div class="d-flex align-items-center">
 				<button
-					class="btn btn-outline-dark me-2"
+					class="btn btn-light me-1"
 					data-bs-toggle="offcanvas"
 					data-bs-target="#offcanvasExample"><i class="fa-solid fa-bars" /></button
 				>

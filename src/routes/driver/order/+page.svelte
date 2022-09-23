@@ -70,8 +70,8 @@
 						mapOrdersFiltered = filter(ordersForFilterWho.selected, ordersForFilterStatus.selected);
 					}
 				});
-				positionFrom.subscribe((v) => (order.positionFrom = v));
-				positionTo.subscribe((v) => (order.positionTo = v));
+				positionFrom.subscribe((v) => (order.route.positionFrom = v));
+				positionTo.subscribe((v) => (order.route.positionTo = v));
 			} else {
 				goto('/driver/login');
 			}
@@ -133,16 +133,6 @@
 								class="dropdown-item"
 								on:click={() => {
 									ordersForFilterStatus.selected = item;
-									// switch (item) {
-									// 	case '':
-									// 		mapOrdersFiltered = mapOrders;
-									// 		break;
-									// 	case item:
-									// 		mapOrdersFiltered = Object.fromEntries(
-									// 			[...Object.entries(mapOrders)].filter(([k, v]) => v.status == item)
-									// 		);
-									// 		break;
-									// }
 									mapOrdersFiltered = filter(
 										ordersForFilterWho.selected,
 										ordersForFilterStatus.selected

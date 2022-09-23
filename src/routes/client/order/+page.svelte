@@ -13,8 +13,8 @@
 		update
 	} from 'firebase/database';
 	import Order from '$lib/Order';
-	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
 	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
+	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
 
@@ -57,8 +57,8 @@
 						}
 					}
 				);
-				positionFrom.subscribe((v) => (order.positionFrom = v));
-				positionTo.subscribe((v) => (order.positionTo = v));
+				positionFrom.subscribe((v) => (order.route.positionFrom = v));
+				positionTo.subscribe((v) => (order.route.positionTo = v));
 				MakeOrderShow.subscribe((v) => (showForm = v));
 			} else {
 				goto('/client/login');
@@ -66,9 +66,10 @@
 		});
 	});
 	function createOrder() {
-		if (order.positionFrom && order.positionTo && order.goods && order.car) {
+		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
-			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString(); //
+			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString();
+			console.log(order);
 			push(ref(db, 'orders'), order);
 			order = new Order();
 		}
@@ -112,7 +113,7 @@
 		<div class="input-group mb-3">
 			<input
 				class="form-control"
-				bind:value={order.positionFrom.address}
+				bind:value={order.route.positionFrom.address}
 				placeholder="откуда забирать товар"
 				readonly
 			/>
@@ -127,7 +128,7 @@
 		<div class="input-group mb-3">
 			<input
 				class="form-control"
-				bind:value={order.positionTo.address}
+				bind:value={order.route.positionTo.address}
 				placeholder="куда везти товар"
 				readonly
 			/>

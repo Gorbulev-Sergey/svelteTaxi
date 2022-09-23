@@ -2,7 +2,6 @@
 	// @ts-nocheck
 	import { auth } from '$lib/scripts/firebase.js';
 	import { signInWithEmailAndPassword } from 'firebase/auth';
-	import { ref, child, get, set, push, remove } from 'firebase/database';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Client from '$lib/Client';
@@ -13,7 +12,7 @@
 	onMount(() => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
-				goto('/');
+				goto('/client/order');
 			}
 		});
 	});

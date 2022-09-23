@@ -1,109 +1,98 @@
 <script>
 	// @ts-nocheck
 	import { goto } from '$app/navigation';
-	import { positionTo } from '$lib/scripts/myData';
+	import { positionTo, route } from '$lib/scripts/myData';
 	import Position from '$lib/Position';
 	import { onMount } from 'svelte';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
+	import { yandexMaps } from '$lib/scripts/yandexMaps';
 
 	let myPositionTo = new Position();
 	let currentPosition = [55.76, 37.64];
-	let myMap, myPlacemark, geolocation;
-
-	function init() {
-		geolocation = ymaps.geolocation;
-		myMap = new ymaps.Map(
-			'map',
-			{
-				center: currentPosition,
-				zoom: 9
-			},
-			{
-				searchControlProvider: 'yandex#search'
-			}
-		);
-
-		// положение, вычисленное по ip пользователя
-		geolocation
-			.get({
-				provider: 'yandex',
-				mapStateAutoApply: true
-			})
-			.then(function (result) {
-				// Красным цветом пометим положение, вычисленное через ip.
-				result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-				result.geoObjects.get(0).properties.set({
-					balloonContentBody: 'Мое местоположение'
-				});
-				myMap.geoObjects.add(result.geoObjects);
-			});
-
-		// Слушаем клик на карте.
-		myMap.events.add('click', function (e) {
-			var coords = e.get('coords');
-
-			// Если метка уже создана – просто передвигаем ее.
-			if (myPlacemark) {
-				myPlacemark.geometry.setCoordinates(coords);
-			}
-			// Если нет – создаем.
-			else {
-				myPlacemark = createPlacemark(coords);
-				myMap.geoObjects.add(myPlacemark);
-				// Слушаем событие окончания перетаскивания на метке.
-				myPlacemark.events.add('dragend', function () {
-					getAddress(myPlacemark.geometry.getCoordinates());
-				});
-			}
-			getAddress(coords);
-		});
-
-		// Создание метки.
-		function createPlacemark(coords) {
-			return new ymaps.Placemark(
-				coords,
-				{
-					iconCaption: 'поиск...'
-				},
-				{
-					preset: 'islands#violetDotIconWithCaption',
-					draggable: true
-				}
-			);
-		}
-
-		// Определяем адрес по координатам (обратное геокодирование).
-		function getAddress(coords) {
-			myPlacemark.properties.set('iconCaption', 'поиск...');
-			ymaps.geocode(coords).then(function (res) {
-				var firstGeoObject = res.geoObjects.get(0);
-
-				myPlacemark.properties.set({
-					// Формируем строку с данными об объекте.
-					iconCaption: [
-						// Название населенного пункта или вышестоящее административно-территориальное образование.
-						firstGeoObject.getLocalities().length
-							? firstGeoObject.getLocalities()
-							: firstGeoObject.getAdministrativeAreas(),
-						// Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
-						firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-					]
-						.filter(Boolean)
-						.join(', '),
-					// В качестве контента балуна задаем строку с адресом объекта.
-					balloonContent: firstGeoObject.getAddressLine()
-				});
-				myPositionTo = new Position(
-					firstGeoObject.getAddressLine(),
-					myPlacemark.geometry.getCoordinates()
-				);
-			});
-		}
-	}
+	let myPlacemark, geolocation;
 
 	onMount(() => {
-		// @ts-ignore
-		ymaps.ready(init);
+		yandexMaps().then((maps) => {
+			geolocation = ymaps.geolocation;
+
+			// Слушаем клик на карте.
+			maps.events.add('click', function (e) {
+				let coords = e.get('coords');
+
+				// Если метка уже создана – просто передвигаем ее.
+				if (myPlacemark) {
+					myPlacemark.geometry.setCoordinates(coords);
+				}
+				// Если нет – создаем.
+				else {
+					myPlacemark = createPlacemark(coords);
+					maps.geoObjects.add(myPlacemark);
+					// Слушаем событие окончания перетаскивания на метке.
+					myPlacemark.events.add('dragend', function () {
+						getAddress(myPlacemark.geometry.getCoordinates());
+					});
+				}
+				getAddress(coords);
+			});
+
+			// Создание метки.
+			function createPlacemark(coords) {
+				return new ymaps.Placemark(
+					coords,
+					{
+						iconCaption: 'поиск...'
+					},
+					{
+						preset: 'islands#violetDotIconWithCaption',
+						draggable: true
+					}
+				);
+			}
+
+			// Определяем адрес по координатам (обратное геокодирование).
+			function getAddress(coords) {
+				myPlacemark.properties.set('iconCaption', 'поиск...');
+				ymaps.geocode(coords).then(function (res) {
+					var firstGeoObject = res.geoObjects.get(0);
+
+					myPlacemark.properties.set({
+						// Формируем строку с данными об объекте.
+						iconCaption: [
+							// Название населенного пункта или вышестоящее административно-территориальное образование.
+							firstGeoObject.getLocalities().length
+								? firstGeoObject.getLocalities()
+								: firstGeoObject.getAdministrativeAreas(),
+							// Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+							firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+						]
+							.filter(Boolean)
+							.join(', '),
+						// В качестве контента балуна задаем строку с адресом объекта.
+						balloonContent: firstGeoObject.getAddressLine()
+					});
+					myPositionTo = new Position(
+						firstGeoObject.getAddressLine(),
+						myPlacemark.geometry.getCoordinates()
+					);
+				});
+			}
+
+			// Сравним положение, вычисленное по ip пользователя и
+			// положение, вычисленное средствами браузера.
+			geolocation
+				.get({
+					provider: 'yandex',
+					mapStateAutoApply: true
+				})
+				.then(function (result) {
+					// Красным цветом пометим положение, вычисленное через ip.
+					result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+					result.geoObjects.get(0).properties.set({
+						balloonContentBody: 'Мое местоположение'
+					});
+					maps.geoObjects.add(result.geoObjects);
+				});
+		});
 	});
 </script>
 

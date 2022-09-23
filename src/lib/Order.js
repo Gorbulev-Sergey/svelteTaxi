@@ -2,8 +2,12 @@ import Position from '$lib/Position';
 
 export default class Order {
 	constructor() {
-		this.positionFrom = new Position();
-		this.positionTo = new Position();
+		this.route = {
+			positionFrom: new Position(),
+			positionTo: new Position(),
+			distance: '',
+			duration: ''
+		};
 		this.goods = null;
 		this.car = null;
 		this.dateOrderCreated = new Date().toLocaleDateString();

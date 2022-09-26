@@ -1,19 +1,24 @@
 import Position from '$lib/Position';
+import { Route } from './Route';
 
 export default class Order {
-	constructor() {
-		this.route = {
-			positionFrom: new Position(),
-			positionTo: new Position(),
-			distance: '',
-			duration: ''
-		};
-		this.goods = null;
-		this.car = null;
-		this.dateOrderCreated = new Date().toLocaleDateString();
-		this.dateOfDelivery = new Date().toLocaleDateString();
-		this.driver = null;
-		this.client = null;
-		this.status = null;
+	constructor(
+		route = new Route(),
+		goods,
+		car,
+		dateOrderCreated = new Date().toLocaleDateString(),
+		dateOfDelivery = new Date().toLocaleDateString(),
+		driver,
+		client,
+		status
+	) {
+		this.route = route;
+		this.goods = goods;
+		this.car = car;
+		this.dateOrderCreated = dateOrderCreated;
+		this.dateOfDelivery = dateOfDelivery;
+		this.driver = driver;
+		this.client = client;
+		this.status = status;
 	}
 }

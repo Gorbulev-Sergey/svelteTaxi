@@ -5,7 +5,7 @@
 
 	let isLogin = false;
 
-	onMount(() => {
+	onMount(async () => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
 				isLogin = true;
@@ -18,6 +18,4 @@
 
 {#if isLogin}
 	<slot />
-{:else}
-	<slot name="notLogin" />
 {/if}

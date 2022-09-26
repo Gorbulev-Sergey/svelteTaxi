@@ -1,5 +1,10 @@
 <script>
-	import { onMount } from 'svelte';
+	// @ts-nocheck
+
+	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
+	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
+	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import { auth, db } from '$lib/scripts/firebase';
 	import { goto } from '$app/navigation';
 	import {
@@ -14,15 +19,12 @@
 	} from 'firebase/database';
 	import Order from '$lib/Order';
 	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
-	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
-	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
-	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
 
 	let user;
 	let order = new Order();
 	let mapOrders = new Map();
 	let mapOrdersFiltered = new Map();
-	$: showForm = '';
+	let showForm = '';
 
 	let ordersForFilterStatus = {
 		selected: 'все',
@@ -43,7 +45,7 @@
 		return mapOrdersForFilter;
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
 				user = auth;
@@ -65,6 +67,14 @@
 			}
 		});
 	});
+
+	onMount(() => {
+		ymaps.ready(() => {
+			new ymaps.SuggestView('searchFrom');
+			new ymaps.SuggestView('searchTo');
+		});
+	});
+
 	function createOrder() {
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
@@ -112,11 +122,12 @@
 		<h4 class="mb-3">Заказать автомобиль</h4>
 		<div class="input-group mb-3">
 			<input
-				class="form-control"
+				id="searchFrom"
+				type="text"
 				bind:value={order.route.positionFrom.address}
+				class="form-control rounded-start"
 				placeholder="откуда забирать товар"
-				readonly
-			/>
+			/><!-- -->
 			<button
 				class="btn btn-dark"
 				on:click={() => {
@@ -127,11 +138,12 @@
 		</div>
 		<div class="input-group mb-3">
 			<input
-				class="form-control"
+				id="searchTo"
+				type="text"
 				bind:value={order.route.positionTo.address}
+				class="form-control rounded-start"
 				placeholder="куда везти товар"
-				readonly
-			/>
+			/><!-- -->
 			<button
 				class="btn btn-dark"
 				on:click={() => {

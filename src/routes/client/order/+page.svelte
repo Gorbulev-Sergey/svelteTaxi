@@ -4,7 +4,7 @@
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
-	import { afterUpdate, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { auth, db } from '$lib/scripts/firebase';
 	import { goto } from '$app/navigation';
 	import {
@@ -124,10 +124,14 @@
 			<input
 				id="searchFrom"
 				type="text"
-				bind:value={order.route.positionFrom.address}
+				on:blur={function () {
+					setInterval(() => {
+						order.route.positionFrom.address = this.value;
+					}, 1000);
+				}}
 				class="form-control rounded-start"
 				placeholder="откуда забирать товар"
-			/><!-- -->
+			/>
 			<button
 				class="btn btn-dark"
 				on:click={() => {
@@ -140,10 +144,14 @@
 			<input
 				id="searchTo"
 				type="text"
-				bind:value={order.route.positionTo.address}
+				on:blur={function () {
+					setInterval(() => {
+						order.route.positionTo.address = this.value;
+					}, 1000);
+				}}
 				class="form-control rounded-start"
 				placeholder="куда везти товар"
-			/><!-- -->
+			/>
 			<button
 				class="btn btn-dark"
 				on:click={() => {

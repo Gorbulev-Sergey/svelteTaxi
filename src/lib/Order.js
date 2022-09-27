@@ -4,13 +4,13 @@ import { Route } from './Route';
 export default class Order {
 	constructor(
 		route = new Route(),
-		goods,
-		car,
+		goods = null,
+		car = null,
 		dateOrderCreated = new Date().toLocaleDateString(),
 		dateOfDelivery = new Date().toLocaleDateString(),
-		driver,
-		client,
-		status
+		driver = null,
+		client = null,
+		status = null
 	) {
 		this.route = route;
 		this.goods = goods;

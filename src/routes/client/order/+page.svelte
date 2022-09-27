@@ -68,7 +68,7 @@
 		});
 	});
 
-	onMount(() => {
+	onMount(async () => {
 		ymaps.ready(() => {
 			new ymaps.SuggestView('searchFrom');
 			new ymaps.SuggestView('searchTo');
@@ -79,7 +79,6 @@
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
 			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString();
-			console.log(order);
 			push(ref(db, 'orders'), order);
 			order = new Order();
 		}
@@ -125,7 +124,7 @@
 				id="searchFrom"
 				type="text"
 				on:blur={function () {
-					setInterval(() => {
+					setTimeout(() => {
 						order.route.positionFrom.address = this.value;
 					}, 1000);
 				}}
@@ -145,7 +144,7 @@
 				id="searchTo"
 				type="text"
 				on:blur={function () {
-					setInterval(() => {
+					setTimeout(() => {
 						order.route.positionTo.address = this.value;
 					}, 1000);
 				}}

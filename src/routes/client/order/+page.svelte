@@ -17,7 +17,7 @@
 		ref,
 		update
 	} from 'firebase/database';
-	import Order from '$lib/Order';
+	import Order from '$lib/models/Order';
 	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
 
 	let user;
@@ -123,9 +123,14 @@
 			<input
 				id="searchFrom"
 				type="text"
-				on:blur={function () {
+				bind:value={order.route.positionFrom.address}
+				on:blur={async function () {
 					setTimeout(() => {
 						order.route.positionFrom.address = this.value;
+						ymaps.geocode(this.value).then((res) => {
+							let geoObject = res.geoObjects.get(0);
+							order.route.positionFrom.coordinates = geoObject.geometry.getCoordinates();
+						});
 					}, 1000);
 				}}
 				class="form-control rounded-start"
@@ -143,9 +148,14 @@
 			<input
 				id="searchTo"
 				type="text"
-				on:blur={function () {
+				bind:value={order.route.positionTo.address}
+				on:blur={async function () {
 					setTimeout(() => {
 						order.route.positionTo.address = this.value;
+						ymaps.geocode(this.value).then((res) => {
+							let geoObject = res.geoObjects.get(0);
+							order.route.positionTo.coordinates = geoObject.geometry.getCoordinates();
+						});
 					}, 1000);
 				}}
 				class="form-control rounded-start"
@@ -171,25 +181,26 @@
 			bind:value={order.dateOfDelivery}
 			placeholder="когда, дата доставки"
 		/>
-		<button
-			class="btn btn-dark mb-1"
-			data-bs-toggle="collapse"
-			data-bs-target="#collapseForm"
-			on:click={() => {
-				createOrder();
-				MakeOrderShow.update((v) => '');
-				order = new Order();
-			}}>Сделать заказ</button
-		>
-		<button
-			class="btn btn-dark mb-1"
-			data-bs-toggle="collapse"
-			data-bs-target="#collapseForm"
-			on:click={() => {
-				MakeOrderShow.update((v) => '');
-				order = new Order();
-			}}>Отмена</button
-		>
+		<div class="d-flex justify-content-between align-items-center">
+			<button
+				class="btn btn-dark mb-1"
+				data-bs-toggle="collapse"
+				data-bs-target="#collapseForm"
+				on:click={() => {
+					createOrder();
+					MakeOrderShow.update((v) => '');
+					order = new Order();
+				}}>Сделать заказ</button
+			><button
+				class="btn btn-dark mb-1"
+				data-bs-toggle="collapse"
+				data-bs-target="#collapseForm"
+				on:click={() => {
+					MakeOrderShow.update((v) => '');
+					order = new Order();
+				}}>Отмена</button
+			>
+		</div>
 	</div>
 
 	{#each Object.entries(mapOrdersFiltered) as [key, value], i}

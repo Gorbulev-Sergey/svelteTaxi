@@ -13,7 +13,7 @@
 		ref,
 		update
 	} from 'firebase/database';
-	import Order from '$lib/Order';
+	import Order from '$lib/models/Order';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
 	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import { updateCurrentUser } from 'firebase/auth';

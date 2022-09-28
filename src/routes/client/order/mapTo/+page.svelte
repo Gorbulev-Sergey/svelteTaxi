@@ -2,7 +2,7 @@
 	// @ts-nocheck
 	import { goto } from '$app/navigation';
 	import { positionTo, route } from '$lib/scripts/myData';
-	import Position from '$lib/Position';
+	import Position from '$lib/models/Position';
 	import { onMount } from 'svelte';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import { yandexMaps } from '$lib/scripts/yandexMaps';

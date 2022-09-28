@@ -4,7 +4,7 @@
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import Client from '$lib/Client';
+	import Client from '$lib/models/Client';
 
 	let user;
 	let client = new Client();

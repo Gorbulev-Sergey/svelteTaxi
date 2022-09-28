@@ -8,7 +8,7 @@
 		updateProfile
 	} from 'firebase/auth';
 	import { ref, child, get, set, push, remove, onValue } from 'firebase/database';
-	import Client from '$lib/Client';
+	import Client from '$lib/models/Client';
 
 	let client = new Client();
 

@@ -3,8 +3,8 @@ export class Route {
 	constructor(
 		positionFrom = new Position(),
 		positionTo = new Position(),
-		distance = null,
-		duration = null
+		distance = '',
+		duration = ''
 	) {
 		this.positionFrom = positionFrom;
 		this.positionTo = positionTo;

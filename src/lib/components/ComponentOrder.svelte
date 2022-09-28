@@ -1,5 +1,5 @@
 <script>
-	import Order from '$lib/Order';
+	import Order from '$lib/models/Order';
 
 	export let i = 0;
 	export let order = new Order();

@@ -1,4 +1,4 @@
-import Position from '$lib/Position';
+import Position from '$lib/models/Position';
 import { Route } from './Route';
 
 export default class Order {

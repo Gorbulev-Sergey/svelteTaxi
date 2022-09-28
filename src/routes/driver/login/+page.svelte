@@ -4,7 +4,7 @@
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import Driver from '$lib/Driver';
+	import Driver from '$lib/models/Driver';
 
 	let user;
 	let driver = new Driver();

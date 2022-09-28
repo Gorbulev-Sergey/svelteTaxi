@@ -8,7 +8,7 @@
 		updateProfile
 	} from 'firebase/auth';
 	import { ref, child, get, set, push, remove, onValue } from 'firebase/database';
-	import Driver from '$lib/Driver';
+	import Driver from '$lib/models/Driver';
 
 	let driver = new Driver();
 

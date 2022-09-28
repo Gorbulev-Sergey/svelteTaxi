@@ -19,6 +19,7 @@
 	} from 'firebase/database';
 	import Order from '$lib/models/Order';
 	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
+	import Position from '$lib/models/Position';
 
 	let user;
 	let order = new Order();
@@ -189,7 +190,8 @@
 				on:click={() => {
 					createOrder();
 					MakeOrderShow.update((v) => '');
-					order = new Order();
+					positionFrom.update((v) => new Position());
+					positionTo.update((v) => new Position());
 				}}>Сделать заказ</button
 			><button
 				class="btn btn-dark mb-1"
@@ -197,7 +199,8 @@
 				data-bs-target="#collapseForm"
 				on:click={() => {
 					MakeOrderShow.update((v) => '');
-					order = new Order();
+					positionFrom.update((v) => new Position());
+					positionTo.update((v) => new Position());
 				}}>Отмена</button
 			>
 		</div>

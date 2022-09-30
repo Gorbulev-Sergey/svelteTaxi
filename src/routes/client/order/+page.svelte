@@ -60,8 +60,10 @@
 						}
 					}
 				);
-				positionFrom.subscribe((v) => (order.route.positionFrom = v));
-				positionTo.subscribe((v) => (order.route.positionTo = v));
+				order.route.positionFrom = $positionFrom;
+				order.route.positionTo = $positionTo;
+				// positionFrom.subscribe((v) => (order.route.positionFrom = v));
+				// positionTo.subscribe((v) => (order.route.positionTo = v));
 				MakeOrderShow.subscribe((v) => (showForm = v));
 			} else {
 				goto('/client/login');
@@ -124,13 +126,13 @@
 			<input
 				id="searchFrom"
 				type="text"
-				bind:value={order.route.positionFrom.address}
+				bind:value={$positionFrom.address}
 				on:blur={async function () {
 					setTimeout(() => {
-						order.route.positionFrom.address = this.value;
+						$positionFrom.address = this.value;
 						ymaps.geocode(this.value).then((res) => {
 							let geoObject = res.geoObjects.get(0);
-							order.route.positionFrom.coordinates = geoObject.geometry.getCoordinates();
+							$positionFrom.coordinates = geoObject.geometry.getCoordinates();
 						});
 					}, 1000);
 				}}
@@ -152,10 +154,10 @@
 				bind:value={order.route.positionTo.address}
 				on:blur={async function () {
 					setTimeout(() => {
-						order.route.positionTo.address = this.value;
+						$positionTo.address = this.value;
 						ymaps.geocode(this.value).then((res) => {
 							let geoObject = res.geoObjects.get(0);
-							order.route.positionTo.coordinates = geoObject.geometry.getCoordinates();
+							$positionTo.coordinates = geoObject.geometry.getCoordinates();
 						});
 					}, 1000);
 				}}
@@ -190,8 +192,8 @@
 				on:click={() => {
 					createOrder();
 					MakeOrderShow.update((v) => '');
-					positionFrom.update((v) => new Position());
-					positionTo.update((v) => new Position());
+					$positionFrom = new Position();
+					$positionTo = new Position();
 				}}>Сделать заказ</button
 			><button
 				class="btn btn-dark mb-1"
@@ -199,8 +201,8 @@
 				data-bs-target="#collapseForm"
 				on:click={() => {
 					MakeOrderShow.update((v) => '');
-					positionFrom.update((v) => new Position());
-					positionTo.update((v) => new Position());
+					$positionFrom = new Position();
+					$positionTo = new Position();
 				}}>Отмена</button
 			>
 		</div>

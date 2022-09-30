@@ -39,30 +39,27 @@ export function mapsRoute(start, end, trafficJams = true) {
 }
 
 export function mapsOnClick(maps, myPlacemark) {
-	let placemark = new Placemark();
-	// Слушаем клик на карте.
-	maps.events.add('click', function (e) {
-		let coords = e.get('coords');
+	return new Promise((responce) => {
+		let position = new Position();
+		// Слушаем клик на карте.
+		maps.events.add('click', function (e) {
+			let coords = e.get('coords');
 
-		// Если метка уже создана – просто передвигаем ее.
-		if (myPlacemark) {
-			myPlacemark.geometry.setCoordinates(coords);
-		}
-		// Если нет – создаем.
-		else {
-			myPlacemark = mapsCreatePlacemark(coords);
-			maps.geoObjects.add(myPlacemark);
+			// Если метка уже создана – просто передвигаем ее.
+			if (myPlacemark) {
+				myPlacemark.geometry.setCoordinates(coords);
+			}
+			// Если нет – создаем.
+			else {
+				myPlacemark = mapsCreatePlacemark(coords);
+				maps.geoObjects.add(myPlacemark);
+			}
 			// Слушаем событие окончания перетаскивания на метке.
 			myPlacemark.events.add('dragend', function () {
-				mapsGetAddress(myPlacemark.geometry.getCoordinates(), myPlacemark).then(
-					(v) => (placemark = v)
-				);
-				return placemark;
+				coords = myPlacemark.geometry.getCoordinates();
 			});
-		}
-
-		mapsGetAddress(coords, myPlacemark).then((v) => (placemark = v));
-		return placemark;
+			responce(myPlacemark.geometry.getCoordinates());
+		});
 	});
 }
 
@@ -70,7 +67,7 @@ export function mapsCreatePlacemark(coords) {
 	return new ymaps.Placemark(
 		coords,
 		{
-			iconCaption: 'поиск...'
+			iconCaption: ''
 		},
 		{
 			preset: 'islands#violetDotIconWithCaption',
@@ -81,7 +78,7 @@ export function mapsCreatePlacemark(coords) {
 
 export function mapsGetAddress(coords, myPlacemark) {
 	return new Promise((responce, reject) => {
-		myPlacemark.properties.set('iconCaption', 'поиск...');
+		myPlacemark.properties.set('iconCaption', '');
 		ymaps.geocode(coords).then(function (res) {
 			var firstGeoObject = res.geoObjects.get(0);
 			myPlacemark.properties.set({
@@ -99,8 +96,9 @@ export function mapsGetAddress(coords, myPlacemark) {
 				// В качестве контента балуна задаем строку с адресом объекта.
 				balloonContent: firstGeoObject.getAddressLine()
 			});
-			let p = new Position(firstGeoObject.getAddressLine(), myPlacemark.geometry.getCoordinates());
-			responce(p);
+			responce(
+				new Position(firstGeoObject.getAddressLine(), myPlacemark.geometry.getCoordinates())
+			);
 		});
 	});
 }

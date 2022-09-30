@@ -23,8 +23,7 @@
 
 	let user;
 	let order = new Order();
-	let mapOrders = new Map();
-	let mapOrdersFiltered = new Map();
+	let mapOrders, mapOrdersFiltered;
 	let showForm = '';
 
 	let ordersForFilterStatus = {
@@ -89,7 +88,7 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex flex-column mx-2 mb-2">
+	<div class="d-flex flex-column mx-0 mb-2">
 		<ComponentTitle title="Мои заказы">
 			<button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#collapseForm">
 				Добавить
@@ -208,7 +207,15 @@
 		</div>
 	</div>
 
-	{#each Object.entries(mapOrdersFiltered) as [key, value], i}
-		<ComponentOrder order={value} {i} />
-	{/each}
+	{#if !mapOrdersFiltered}
+		<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Загрузка...</span>
+			</div>
+		</div>
+	{:else}
+		{#each Object.entries(mapOrdersFiltered) as [key, value], i}
+			<ComponentOrder order={value} {i} />
+		{/each}
+	{/if}
 </ComponentAuth>

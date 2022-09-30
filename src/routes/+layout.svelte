@@ -29,13 +29,13 @@
 						class="list-group-item list-group-item-action"
 						data-bs-toggle="offcanvas"
 						data-bs-target="#offcanvasExample"
-						on:click={() => goto('/client/profile')}>Профиль</button
+						on:click={() => goto('/client/order')}>Мои заказы</button
 					>
 					<button
 						class="list-group-item list-group-item-action"
 						data-bs-toggle="offcanvas"
 						data-bs-target="#offcanvasExample"
-						on:click={() => goto('/client/order')}>Мои заказы</button
+						on:click={() => goto('/client/profile')}>Мой профиль</button
 					>
 					<button class="list-group-item list-group-item-action" on:click={() => auth.signOut()}
 						>Выход</button

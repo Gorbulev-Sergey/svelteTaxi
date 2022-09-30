@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
@@ -20,11 +19,11 @@
 	import Order from '$lib/models/Order';
 	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
 	import Position from '$lib/models/Position';
+	import ComponentCreateOrder from '$lib/components/ComponentCreateOrder.svelte';
 
 	let user;
 	let order = new Order();
 	let mapOrders, mapOrdersFiltered;
-	let showForm = '';
 
 	let ordersForFilterStatus = {
 		selected: 'все',
@@ -119,93 +118,7 @@
 		</div>
 	</div>
 
-	<div class="collapse bg-white rounded p-3 mb-3 {showForm}" id="collapseForm">
-		<h4 class="mb-3">Заказать автомобиль</h4>
-		<div class="input-group mb-3">
-			<input
-				id="searchFrom"
-				type="text"
-				bind:value={$positionFrom.address}
-				on:blur={async function () {
-					setTimeout(() => {
-						$positionFrom.address = this.value;
-						ymaps.geocode(this.value).then((res) => {
-							let geoObject = res.geoObjects.get(0);
-							$positionFrom.coordinates = geoObject.geometry.getCoordinates();
-						});
-					}, 1000);
-				}}
-				class="form-control rounded-start"
-				placeholder="откуда забирать товар"
-			/>
-			<button
-				class="btn btn-dark"
-				on:click={() => {
-					MakeOrderShow.update((v) => 'show');
-					goto('/client/order/mapFrom');
-				}}>...</button
-			>
-		</div>
-		<div class="input-group mb-3">
-			<input
-				id="searchTo"
-				type="text"
-				bind:value={order.route.positionTo.address}
-				on:blur={async function () {
-					setTimeout(() => {
-						$positionTo.address = this.value;
-						ymaps.geocode(this.value).then((res) => {
-							let geoObject = res.geoObjects.get(0);
-							$positionTo.coordinates = geoObject.geometry.getCoordinates();
-						});
-					}, 1000);
-				}}
-				class="form-control rounded-start"
-				placeholder="куда везти товар"
-			/>
-			<button
-				class="btn btn-dark"
-				on:click={() => {
-					MakeOrderShow.update((v) => 'show');
-					goto('/client/order/mapTo');
-				}}>...</button
-			>
-		</div>
-		<input
-			class="form-control mb-3"
-			bind:value={order.goods}
-			placeholder="груз, опишите в двух словах"
-		/>
-		<input class="form-control mb-3" bind:value={order.car} placeholder="автомобиль" />
-		<input
-			type="date"
-			class="form-control mb-3"
-			bind:value={order.dateOfDelivery}
-			placeholder="когда, дата доставки"
-		/>
-		<div class="d-flex justify-content-between align-items-center">
-			<button
-				class="btn btn-dark mb-1"
-				data-bs-toggle="collapse"
-				data-bs-target="#collapseForm"
-				on:click={() => {
-					createOrder();
-					MakeOrderShow.update((v) => '');
-					$positionFrom = new Position();
-					$positionTo = new Position();
-				}}>Сделать заказ</button
-			><button
-				class="btn btn-dark mb-1"
-				data-bs-toggle="collapse"
-				data-bs-target="#collapseForm"
-				on:click={() => {
-					MakeOrderShow.update((v) => '');
-					$positionFrom = new Position();
-					$positionTo = new Position();
-				}}>Отмена</button
-			>
-		</div>
-	</div>
+	<ComponentCreateOrder {order} />
 
 	{#if !mapOrdersFiltered}
 		<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">

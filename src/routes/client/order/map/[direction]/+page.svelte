@@ -1,8 +1,9 @@
 <script>
 	// @ts-nocheck
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { positionFrom } from '$lib/scripts/myData';
+	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import {
 		mapsCreatePlacemark,
 		mapsGetAddress,
@@ -15,14 +16,29 @@
 
 	onMount(async () => {
 		mapsYandex().then((maps) => {
-			if (!myPlacemark) {
-				myPlacemark = mapsCreatePlacemark($positionFrom.coordinates);
-				maps.geoObjects.add(myPlacemark);
+			myPlacemark = mapsCreatePlacemark([10, 10]);
+			switch ($page.params.direction) {
+				case 'from':
+					if ($positionTo.address != '') {
+						myPlacemark = mapsCreatePlacemark($positionFrom.coordinates);
+						maps.geoObjects.add(myPlacemark);
+					}
+					mapsOnClick(maps, myPlacemark).then((v) => {
+						$positionFrom.coordinates = v;
+						mapsGetAddress(v, myPlacemark).then((r) => ($positionFrom.address = r.address));
+					});
+					break;
+				case 'to':
+					if ($positionTo.address != '') {
+						myPlacemark = mapsCreatePlacemark($positionTo.coordinates);
+						maps.geoObjects.add(myPlacemark);
+					}
+					mapsOnClick(maps, myPlacemark).then((v) => {
+						$positionTo.coordinates = v;
+						mapsGetAddress(v, myPlacemark).then((r) => ($positionTo.address = r.address));
+					});
+					break;
 			}
-			mapsOnClick(maps, myPlacemark).then((v) => {
-				$positionFrom.coordinates = v;
-				mapsGetAddress(v, myPlacemark).then((r) => ($positionFrom.address = r.address));
-			});
 			geolocation = ymaps.geolocation;
 			geolocation
 				.get({
@@ -42,7 +58,9 @@
 </script>
 
 <ComponentAuth>
-	<h4 class="my-3">Откуда забирать товар</h4>
+	<h4 class="my-3">
+		{$page.params.direction == 'from' ? 'Откуда забирать товар' : 'Куда доставлять товар'}
+	</h4>
 	<div class="rounded">
 		<div id="map" class="rounded" style="width: 100%; height:80vh" />
 	</div>

@@ -42,21 +42,20 @@ export function mapsOnClick(maps, myPlacemark) {
 	return new Promise((responce) => {
 		let position = new Position();
 		// Слушаем клик на карте.
-		maps.events.add('click', function (e) {
+		maps.events.add('click', (e) => {
 			let coords = e.get('coords');
-
+			// Если нет – создаем.
+			if (!myPlacemark) {
+				myPlacemark = mapsCreatePlacemark(coords);
+			}
 			// Если метка уже создана – просто передвигаем ее.
-			if (myPlacemark) {
+			else {
 				myPlacemark.geometry.setCoordinates(coords);
 			}
-			// Если нет – создаем.
-			else {
-				myPlacemark = mapsCreatePlacemark(coords);
-				maps.geoObjects.add(myPlacemark);
-			}
+			maps.geoObjects.add(myPlacemark);
 			// Слушаем событие окончания перетаскивания на метке.
-			myPlacemark.events.add('dragend', function () {
-				coords = myPlacemark.geometry.getCoordinates();
+			myPlacemark.events.add('dragend', (e) => {
+				myPlacemark.geometry.setCoordinates(e.position);
 			});
 			responce(myPlacemark.geometry.getCoordinates());
 		});

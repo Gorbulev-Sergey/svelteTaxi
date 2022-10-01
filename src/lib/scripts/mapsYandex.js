@@ -1,5 +1,6 @@
 // @ts-nocheck
 import Position from '$lib/models/Position';
+import { Route } from '$lib/models/Route';
 
 export function mapsYandex(containerId = 'map', center = [54.516066, 36.244736], zoom = 9) {
 	return new Promise(function (resolve, reject) {
@@ -19,24 +20,35 @@ export function mapsYandex(containerId = 'map', center = [54.516066, 36.244736],
 	});
 }
 
-export function mapsRoute(coords, callback, trafficJams = true) {
-	ymaps.ready(() => {
-		// Создание экземпляра маршрута.
-		let route = new ymaps.multiRouter.MultiRoute(
-			{
-				// Точки маршрута. Обязательное поле.
-				referencePoints: coords,
-				// Выбор маршрута с учётом пробок
-				params: {
-					avoidTrafficJams: trafficJams
-				}
-			},
-			{
-				// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-				boundsAutoApply: true
+export function mapsRoute(start, end, trafficJams = true) {
+	// Создание экземпляра маршрута.
+	let route = new ymaps.multiRouter.MultiRoute(
+		{
+			// Точки маршрута. Обязательное поле.
+			referencePoints: [start, end],
+			// Выбор маршрута с учётом пробок
+			params: {
+				avoidTrafficJams: trafficJams
 			}
-		);
-		callback(route);
+		},
+		{
+			// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+			boundsAutoApply: true
+		}
+	);
+	return route;
+}
+
+export function mapsGetRouteData(route, callback) {
+	// Подписка на событие обновления данных маршрута.
+	// Обратите внимание, подписка осуществляется для поля model.
+	route.model.events.add('requestsuccess', () => {
+		// Получение ссылки на активный маршрут и вывод информации о маршруте.
+		let data = {
+			distance: route.getActiveRoute().properties.get('distance').text,
+			duration: route.getActiveRoute().properties.get('duration').text
+		};
+		callback(data);
 	});
 }
 

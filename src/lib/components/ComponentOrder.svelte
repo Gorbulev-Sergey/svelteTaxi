@@ -14,6 +14,10 @@
 			>
 		</div>
 		<div><i class="small text-muted">куда: </i><span>{order.route.positionTo.address}</span></div>
+		<div>
+			<div class="badge bg-secondary bg-opacity-75">дистанция: {order.route.distance}</div>
+			<div class="badge bg-secondary bg-opacity-75">время маршрута: {order.route.duration}</div>
+		</div>
 		<div><i class="small text-muted">что везти: </i><span class="me-1">{order.goods}</span></div>
 		<div><i class="small text-muted">автомобиль: </i><span>{order.car}</span></div>
 		<div>
@@ -21,14 +25,13 @@
 			>
 		</div>
 		<slot name="driverName" />
-		<div>
+		<div class="me-2">
 			{#if order.status == 'завершён'}
 				<span class="badge bg-success">{order.status == null ? '' : order.status}</span>
 			{:else}
 				<span class="badge bg-dark">{order.status == null ? '' : order.status}</span>
 			{/if}
 		</div>
-		<div>{order.route.distance}</div>
 	</div>
 	<slot />
 </div>

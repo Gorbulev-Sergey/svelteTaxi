@@ -7,6 +7,8 @@
 	import { showOrder, positionFrom, positionTo } from '$lib/scripts/myData';
 	import Order from '$lib/models/Order';
 	import Position from '$lib/models/Position';
+	import { mapsGetRouteData, mapsRoute } from '$lib/scripts/mapsYandex';
+	import { Route } from '$lib/models/Route';
 
 	export let order = new Order();
 
@@ -14,8 +16,13 @@
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
 			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString();
-			push(ref(db, 'orders'), order);
-			order = new Order();
+
+			mapsGetRouteData(mapsRoute($positionFrom.address, $positionTo.address), (r) => {
+				order.route.distance = r.distance;
+				order.route.duration = r.duration;
+				push(ref(db, 'orders'), order);
+				order = new Order();
+			});
 		}
 	}
 </script>

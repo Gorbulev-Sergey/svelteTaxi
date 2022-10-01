@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Position from './Position';
 export class Route {
 	constructor(
@@ -11,4 +12,11 @@ export class Route {
 		this.distance = distance;
 		this.duration = duration;
 	}
+
+	// constructor() {
+	// 	this.positionFrom = new Position();
+	// 	this.positionTo = new Position();
+	// 	this.distance = '';
+	// 	this.duration = '';
+	// }
 }

@@ -17,7 +17,7 @@
 		update
 	} from 'firebase/database';
 	import Order from '$lib/models/Order';
-	import { MakeOrderShow, positionFrom, positionTo } from '$lib/scripts/myData';
+	import { positionFrom, positionTo, showOrder } from '$lib/scripts/myData';
 	import Position from '$lib/models/Position';
 	import ComponentCreateOrder from '$lib/components/ComponentCreateOrder.svelte';
 
@@ -60,9 +60,6 @@
 				);
 				order.route.positionFrom = $positionFrom;
 				order.route.positionTo = $positionTo;
-				// positionFrom.subscribe((v) => (order.route.positionFrom = v));
-				// positionTo.subscribe((v) => (order.route.positionTo = v));
-				MakeOrderShow.subscribe((v) => (showForm = v));
 			} else {
 				goto('/client/login');
 			}

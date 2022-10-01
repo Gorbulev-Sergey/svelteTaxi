@@ -38,35 +38,12 @@ export function mapsRoute(start, end, trafficJams = true) {
 	return route;
 }
 
-export function mapsOnClick(maps, myPlacemark) {
-	return new Promise((responce) => {
-		let position = new Position();
-		// Слушаем клик на карте.
-		maps.events.add('click', (e) => {
-			let coords = e.get('coords');
-			// Если нет – создаем.
-			if (!myPlacemark) {
-				myPlacemark = mapsCreatePlacemark(coords);
-			}
-			// Если метка уже создана – просто передвигаем ее.
-			else {
-				myPlacemark.geometry.setCoordinates(coords);
-			}
-			maps.geoObjects.add(myPlacemark);
-			// Слушаем событие окончания перетаскивания на метке.
-			myPlacemark.events.add('dragend', (e) => {
-				myPlacemark.geometry.setCoordinates(e.position);
-			});
-			responce(myPlacemark.geometry.getCoordinates());
-		});
-	});
-}
-
-export function mapsCreatePlacemark(coords) {
+export function mapsCreatePlacemark(coords, baloon = '') {
 	return new ymaps.Placemark(
 		coords,
 		{
-			iconCaption: ''
+			iconCaption: baloon,
+			balloonContent: baloon
 		},
 		{
 			preset: 'islands#violetDotIconWithCaption',
@@ -75,29 +52,41 @@ export function mapsCreatePlacemark(coords) {
 	);
 }
 
-export function mapsGetAddress(coords, myPlacemark) {
-	return new Promise((responce, reject) => {
-		myPlacemark.properties.set('iconCaption', '');
-		ymaps.geocode(coords).then(function (res) {
-			var firstGeoObject = res.geoObjects.get(0);
-			myPlacemark.properties.set({
-				// Формируем строку с данными об объекте.
-				iconCaption: [
-					// Название населенного пункта или вышестоящее административно-территориальное образование.
-					firstGeoObject.getLocalities().length
-						? firstGeoObject.getLocalities()
-						: firstGeoObject.getAdministrativeAreas(),
-					// Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
-					firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-				]
-					.filter(Boolean)
-					.join(', '),
-				// В качестве контента балуна задаем строку с адресом объекта.
-				balloonContent: firstGeoObject.getAddressLine()
-			});
-			responce(
-				new Position(firstGeoObject.getAddressLine(), myPlacemark.geometry.getCoordinates())
-			);
+export function mapsOnClick(maps, placemark, callback) {
+	maps.events.add('click', (e) => {
+		let coords = e.get('coords');
+		placemark.geometry.setCoordinates(coords);
+		mapsGetAddress(placemark, (p) => callback(p));
+	});
+}
+
+export function mapsOnDragend(placemark, callback) {
+	placemark.events.add('dragend', (e) => {
+		let coords = e.get('coords');
+		placemark.geometry.setCoordinates(coords);
+		mapsGetAddress(placemark, (p) => callback(p));
+	});
+}
+
+export function mapsGetAddress(placemark, callback) {
+	ymaps.geocode(placemark.geometry.getCoordinates()).then(function (res) {
+		var firstGeoObject = res.geoObjects.get(0);
+		placemark.properties.set({
+			// Формируем строку с данными об объекте.
+			iconCaption: [
+				// Название населенного пункта или вышестоящее административно-территориальное образование.
+				firstGeoObject.getLocalities().length
+					? firstGeoObject.getLocalities()
+					: firstGeoObject.getAdministrativeAreas(),
+				// Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+				firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+			]
+				.filter(Boolean)
+				.join(', '),
+			// В качестве контента балуна задаем строку с адресом объекта.
+			balloonContent: firstGeoObject.getAddressLine()
 		});
+		console.log(new Position(firstGeoObject.getAddressLine(), placemark.geometry.getCoordinates()));
+		callback(new Position(firstGeoObject.getAddressLine(), placemark.geometry.getCoordinates()));
 	});
 }

@@ -6,8 +6,8 @@
 	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import {
 		mapsCreatePlacemark,
-		mapsGetAddress,
 		mapsOnClick,
+		mapsOnDragend,
 		mapsYandex
 	} from '$lib/scripts/mapsYandex';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
@@ -20,18 +20,14 @@
 				case 'from':
 					myPlacemark = mapsCreatePlacemark($positionFrom.coordinates);
 					maps.geoObjects.add(myPlacemark);
-					mapsOnClick(maps, myPlacemark).then((v) => {
-						$positionFrom.coordinates = v;
-						mapsGetAddress(v, myPlacemark).then((r) => ($positionFrom.address = r.address));
-					});
+					mapsOnClick(maps, myPlacemark, (p) => ($positionFrom = p));
+					mapsOnDragend(myPlacemark, (p) => ($positionFrom = p));
 					break;
 				case 'to':
 					myPlacemark = mapsCreatePlacemark($positionTo.coordinates);
 					maps.geoObjects.add(myPlacemark);
-					mapsOnClick(maps, myPlacemark).then((v) => {
-						$positionTo.coordinates = v;
-						mapsGetAddress(v, myPlacemark).then((r) => ($positionTo.address = r.address));
-					});
+					mapsOnClick(maps, myPlacemark, (p) => ($positionTo = p));
+					mapsOnDragend(myPlacemark, (p) => ($positionTo = p));
 					break;
 			}
 			geolocation = ymaps.geolocation;

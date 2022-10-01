@@ -51,7 +51,7 @@
 		<input
 			id="searchTo"
 			type="text"
-			bind:value={order.route.positionTo.address}
+			bind:value={$positionTo.address}
 			on:blur={async function () {
 				setTimeout(() => {
 					$positionTo.address = this.value;

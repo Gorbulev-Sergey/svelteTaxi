@@ -6,6 +6,7 @@
 	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import {
 		mapsCreatePlacemark,
+		mapsGetAddress,
 		mapsOnClick,
 		mapsOnDragend,
 		mapsYandex

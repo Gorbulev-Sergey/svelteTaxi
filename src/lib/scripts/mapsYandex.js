@@ -40,18 +40,17 @@ export function mapsRoute(coords, callback, trafficJams = true) {
 	});
 }
 
-export function mapsCreatePlacemark(coords, baloon = '') {
-	return new ymaps.Placemark(
+export function mapsCreatePlacemark(coords) {
+	let placemark = new ymaps.Placemark(
 		coords,
-		{
-			iconCaption: baloon,
-			balloonContent: baloon
-		},
+		{},
 		{
 			preset: 'islands#violetDotIconWithCaption',
 			draggable: true
 		}
 	);
+	mapsGetAddress(placemark, () => {});
+	return placemark;
 }
 
 export function mapsOnClick(maps, placemark, callback) {

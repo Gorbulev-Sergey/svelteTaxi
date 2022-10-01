@@ -62,9 +62,7 @@ export function mapsOnClick(maps, placemark, callback) {
 }
 
 export function mapsOnDragend(placemark, callback) {
-	placemark.events.add('dragend', (e) => {
-		let coords = e.get('coords');
-		placemark.geometry.setCoordinates(coords);
+	placemark.events.add('dragend', () => {
 		mapsGetAddress(placemark, (p) => callback(p));
 	});
 }

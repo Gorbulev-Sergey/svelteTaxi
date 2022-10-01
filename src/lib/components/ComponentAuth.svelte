@@ -4,13 +4,14 @@
 	import { onMount } from 'svelte';
 
 	let isLogin = false;
+	export let uriToRedirect = '/client/login';
 
 	onMount(async () => {
 		auth.onAuthStateChanged((auth) => {
 			if (auth) {
 				isLogin = true;
 			} else {
-				goto('/client/login');
+				goto(uriToRedirect);
 			}
 		});
 	});

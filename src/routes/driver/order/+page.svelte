@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { onMount } from 'svelte';
 	import { auth, db } from '$lib/scripts/firebase';
 	import { goto } from '$app/navigation';
@@ -27,12 +29,12 @@
 	$: showForm = '';
 
 	let ordersForFilterWho = {
-		selected: 'мои',
+		selected: 'все',
 		orders: ['все', 'мои']
 	};
 	let ordersForFilterStatus = {
-		selected: 'все',
-		orders: ['все', 'в работе', 'завершён']
+		selected: 'новый',
+		orders: ['все', 'новый', 'в работе', 'завершён']
 	};
 
 	function filter(who, status) {
@@ -49,6 +51,11 @@
 		}
 		switch (status) {
 			case 'все':
+				break;
+			case 'новый':
+				mapOrdersForFilter = Object.fromEntries(
+					[...Object.entries(mapOrdersForFilter)].filter(([k, v]) => v.status == null)
+				);
 				break;
 			case status:
 				mapOrdersForFilter = Object.fromEntries(
@@ -80,7 +87,7 @@
 </script>
 
 <ComponentAuth>
-	<div class="d-flex flex-column mx-3 mb-3">
+	<div class="d-flex flex-column mx-0 mb-2">
 		<ComponentTitle title="Заказы" />
 		<div class="d-flex justify-content-start">
 			<!--Первый фильтр-->

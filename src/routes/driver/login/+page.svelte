@@ -36,9 +36,9 @@
 		<input class="form-control mb-3" bind:value={driver.email} placeholder="email" type="email" />
 		<input
 			class="form-control mb-3"
-			bind:value={driver.password}
 			placeholder="пароль"
 			type="password"
+			bind:value={driver.password}
 			on:keydown={(e) => {
 				if (e.key == 'Enter') loginDriver();
 			}}

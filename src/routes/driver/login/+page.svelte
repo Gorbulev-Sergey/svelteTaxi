@@ -39,6 +39,9 @@
 			bind:value={driver.password}
 			placeholder="пароль"
 			type="password"
+			on:keydown={(e) => {
+				if (e.key == 'Enter') loginDriver();
+			}}
 		/>
 
 		<button class="btn btn-dark mb-1" on:click={() => loginDriver()}>Войти</button>

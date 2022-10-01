@@ -62,6 +62,9 @@
 				bind:value={driver.password}
 				placeholder="пароль"
 				type="password"
+				on:keydown={(e) => {
+					if (e.key == 'Enter') createDriver();
+				}}
 			/>
 			<button class="btn btn-dark mb-1" on:click={() => createDriver()}>Зарегистрироваться</button>
 			<br />

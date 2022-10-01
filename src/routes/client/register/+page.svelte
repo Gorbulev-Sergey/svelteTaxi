@@ -62,6 +62,9 @@
 				bind:value={client.password}
 				placeholder="пароль"
 				type="password"
+				on:keydown={(e) => {
+					if (e.key == 'Enter') createClient();
+				}}
 			/>
 			<button class="btn btn-dark mb-1" on:click={() => createClient()}>Зарегистрироваться</button>
 			<br />

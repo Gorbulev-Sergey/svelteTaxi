@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Client from '$lib/models/Client';
+	import { error } from '@sveltejs/kit';
 
 	let user;
 	let client = new Client();
@@ -36,9 +37,12 @@
 		<input class="form-control mb-3" bind:value={client.email} placeholder="email" type="email" />
 		<input
 			class="form-control mb-3"
-			bind:value={client.password}
-			placeholder="пароль"
 			type="password"
+			placeholder="пароль"
+			bind:value={client.password}
+			on:keydown={(e) => {
+				if (e.key == 'Enter') loginClient();
+			}}
 		/>
 
 		<button class="btn btn-dark mb-1" on:click={() => loginClient()}>Войти</button>

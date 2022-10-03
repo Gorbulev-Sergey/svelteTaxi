@@ -17,8 +17,7 @@
 		update
 	} from 'firebase/database';
 	import Order from '$lib/models/Order';
-	import { positionFrom, positionTo, showOrder } from '$lib/scripts/myData';
-	import Position from '$lib/models/Position';
+	import { positionFrom, positionTo } from '$lib/scripts/myData';
 	import ComponentCreateOrder from '$lib/components/ComponentCreateOrder.svelte';
 
 	let user;
@@ -27,13 +26,18 @@
 
 	let ordersForFilterStatus = {
 		selected: 'все',
-		orders: ['все', 'в работе', 'завершён']
+		orders: ['все', 'без ответа', 'в работе', 'завершён']
 	};
 
 	function filter(status) {
 		let mapOrdersForFilter = mapOrders;
 		switch (status) {
 			case 'все':
+				break;
+			case 'без ответа':
+				mapOrdersForFilter = Object.fromEntries(
+					[...Object.entries(mapOrdersForFilter)].filter(([k, v]) => v.status == null)
+				);
 				break;
 			case status:
 				mapOrdersForFilter = Object.fromEntries(
@@ -66,12 +70,12 @@
 		});
 	});
 
-	onMount(async () => {
+	onMount(async () =>
 		ymaps.ready(() => {
 			new ymaps.SuggestView('searchFrom');
 			new ymaps.SuggestView('searchTo');
-		});
-	});
+		})
+	);
 
 	function createOrder() {
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
@@ -118,7 +122,7 @@
 	<ComponentCreateOrder {order} />
 
 	{#if !mapOrdersFiltered}
-		<div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+		<div class="d-flex justify-content-center align-items-center mt-5">
 			<div class="spinner-border" role="status">
 				<span class="visually-hidden">Загрузка...</span>
 			</div>

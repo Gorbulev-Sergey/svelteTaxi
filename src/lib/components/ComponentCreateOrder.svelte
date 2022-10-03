@@ -34,7 +34,7 @@
 			id="searchFrom"
 			type="text"
 			bind:value={$positionFrom.address}
-			on:blur={async function () {
+			on:change={async function () {
 				setTimeout(() => {
 					$positionFrom.address = this.value;
 					ymaps.geocode(this.value).then((res) => {
@@ -59,7 +59,7 @@
 			id="searchTo"
 			type="text"
 			bind:value={$positionTo.address}
-			on:blur={async function () {
+			on:change={async function () {
 				setTimeout(() => {
 					$positionTo.address = this.value;
 					ymaps.geocode(this.value).then((res) => {

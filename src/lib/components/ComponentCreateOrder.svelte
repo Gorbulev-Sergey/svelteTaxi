@@ -46,12 +46,15 @@
 			class="form-control rounded-start"
 			placeholder="откуда забирать товар"
 		/>
+		<button class="btn btn-outline-dark" on:click={() => ($positionFrom = new Position())}
+			><i class="fa-solid fa-delete-left" /></button
+		>
 		<button
 			class="btn btn-dark"
 			on:click={() => {
 				$showOrder = 'show';
 				goto('/client/order/map/from');
-			}}>...</button
+			}}><i class="fa-solid fa-earth-americas" /></button
 		>
 	</div>
 	<div class="input-group mb-3">
@@ -71,12 +74,15 @@
 			class="form-control rounded-start"
 			placeholder="куда везти товар"
 		/>
+		<button class="btn btn-outline-dark" on:click={() => ($positionTo = new Position())}
+			><i class="fa-solid fa-delete-left" /></button
+		>
 		<button
 			class="btn btn-dark"
 			on:click={() => {
 				$showOrder = 'show';
 				goto('/client/order/map/to');
-			}}>...</button
+			}}><i class="fa-solid fa-earth-americas" /></button
 		>
 	</div>
 	<input

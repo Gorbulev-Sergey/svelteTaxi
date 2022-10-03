@@ -129,7 +129,7 @@
 		</div>
 	{:else}
 		{#each Object.entries(mapOrdersFiltered) as [key, value], i}
-			<ComponentOrder order={value} {i} />
+			<ComponentOrder order={value} {i} backToUrl="/client/order" />
 		{/each}
 	{/if}
 </ComponentAuth>

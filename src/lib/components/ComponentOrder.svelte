@@ -1,8 +1,11 @@
 <script>
+	import { goto } from '$app/navigation';
 	import Order from '$lib/models/Order';
+	import { backUrl, routeDetails } from '$lib/scripts/myData';
 
 	export let i = 0;
 	export let order = new Order();
+	export let backToUrl = '';
 </script>
 
 <div class=" bg-white p-3 rounded mb-2">
@@ -38,7 +41,14 @@
 			</div>
 		</div>
 
-		<div class="badge bg-dark">
+		<button
+			class="badge bg-dark border-0"
+			on:click={() => {
+				$routeDetails = order.route;
+				$backUrl = backToUrl;
+				goto('/route');
+			}}
+		>
 			<small>маршрут:</small>
 			<div class="badge bg-secondary bg-opacity-50">
 				<i class="fa-solid fa-road" />
@@ -47,6 +57,6 @@
 			<div class="badge bg-secondary bg-opacity-50">
 				<i class="fa-solid fa-clock" /> ~{order.route.duration.replace('.', '')}
 			</div>
-		</div>
+		</button>
 	</div>
 </div>

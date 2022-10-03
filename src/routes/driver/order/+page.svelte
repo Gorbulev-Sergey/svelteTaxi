@@ -17,7 +17,7 @@
 	} from 'firebase/database';
 	import Order from '$lib/models/Order';
 	import ComponentOrder from '$lib/components/ComponentOrder.svelte';
-	import { positionFrom, positionTo } from '$lib/scripts/myData';
+	import { backUrl, positionFrom, positionTo } from '$lib/scripts/myData';
 	import { updateCurrentUser } from 'firebase/auth';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
@@ -26,7 +26,6 @@
 	let order = new Order();
 	let mapOrders = new Map();
 	let mapOrdersFiltered = new Map();
-	$: showForm = '';
 
 	let ordersForFilterWho = {
 		selected: 'все',
@@ -154,7 +153,7 @@
 	</div>
 
 	{#each Object.entries(mapOrdersFiltered) as [key, value], i}
-		<ComponentOrder order={value} {i}>
+		<ComponentOrder order={value} {i} backToUrl="/driver/order">
 			<div class="d-flex flex-column">
 				{#if !value.status}
 					<button

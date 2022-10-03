@@ -30,7 +30,7 @@
 		<slot />
 	</div>
 	<div class="d-flex justify-content-between align-items-center">
-		<div class="d-flex">
+		<div class="d-flex justify-content-between align-items-center">
 			<div class="badge bg-transparent mt-1 me-2 hidden">{i + 1}</div>
 			<div class="mt-1 me-2">
 				{#if order.status == 'завершён'}

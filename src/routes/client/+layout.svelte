@@ -43,4 +43,7 @@
 			</div>
 		</div>
 	</ComponentAuth>
+	<a href="yandexnavi://build_route_on_map?lat_from=55.74&lon_from=37.60&lat_to=55.76&lon_to=37.64"
+		>Строю маршрут</a
+	>
 </div>

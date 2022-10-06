@@ -132,4 +132,9 @@
 			<ComponentOrder order={value} {i} backToUrl="/client/order" />
 		{/each}
 	{/if}
+
+	<a
+		href="https://yandex.ru/maps/?ll=36.008616%2C54.502817&mode=routes&rtext=54.391217%2C35.739492~54.513845%2C36.261224&rtt=auto&ruri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzAxMjU3MhJQ0KDQvtGB0YHQuNGPLCDQmtCw0LvRg9C20YHQutCw0Y8g0L7QsdC70LDRgdGC0YwsINC%2F0L7RgdGR0LvQvtC6INCR0LDQsdGL0L3QuNC90L4iCg0%2B9Q5CFZuQWUI%3D~ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzA1Njk0MBIa0KDQvtGB0YHQuNGPLCDQmtCw0LvRg9Cz0LAiCg1%2BCxFCFS4OWkI%3D&utm_medium=mapframe&utm_source=maps&z=10.63"
+		>Маршрут</a
+	>
 </ComponentAuth>

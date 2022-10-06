@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import { mapsRoute, mapsYandex } from '$lib/scripts/mapsYandex';
-	import { backUrl, routeDetails } from '$lib/scripts/myData';
+	import { backUrl, positionTo, routeDetails } from '$lib/scripts/myData';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
@@ -21,7 +21,16 @@
 			<div id="map" class="rounded" style="width: 100%; height:80vh" />
 		</div>
 		<div class="d-flex justify-content-between align-items-center">
-			<button class="btn btn-dark mt-3 me-1" on:click={() => {}}>Открыть в навигаторе</button>
+			<button
+				class="btn btn-dark mt-3 me-1"
+				on:click={() => {
+					// Функция вызываемая в нашем андройд приложении клиент
+					jsInterface.startNavigator(
+						$routeDetails.positionTo.coordinates[0],
+						$routeDetails.positionTo.coordinates[1]
+					);
+				}}>Открыть в навигаторе</button
+			>
 			<button
 				class="btn btn-dark mt-3"
 				on:click={() => {

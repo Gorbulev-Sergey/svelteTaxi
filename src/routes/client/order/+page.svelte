@@ -133,14 +133,14 @@
 		{/each}
 	{/if}
 
-	<a
+	<!-- <a
 		href="https://yandex.ru/navi/?from=navi&lang=ru&ll=35.711735%2C54.435770&mode=routes&rtext=54.389974%2C35.732931~54.512649%2C36.286209&rtt=auto&ruri=~&z=10.09"
-		target="_blank">Маршрут</a
+		>Маршрут</a
 	>
 	<br />
 	<a
 		href="https://yandex.ru/navi/?whatshere%5Bpoint%5D=36.298369%2C54.544401&whatshere%5Bzoom%5D=18&lang=ru&from=navi"
-		target="_blank">Навигатор</a
+		>Навигатор</a
 	>
-	<br />
+	<br /> -->
 </ComponentAuth>

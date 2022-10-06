@@ -139,7 +139,7 @@
 	>
 	<br />
 	<a
-		href="https://yandex.ru/navi/?whatshere%5Bpoint%5D=35.737987%2C54.394210&whatshere%5Bzoom%5D=18&lang=ru&from=navi"
+		href="https://yandex.ru/navi/?whatshere%5Bpoint%5D=36.298369%2C54.544401&whatshere%5Bzoom%5D=18&lang=ru&from=navi"
 		target="_blank">Навигатор</a
 	>
 	<br />

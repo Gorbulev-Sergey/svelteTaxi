@@ -80,8 +80,7 @@
 	function createOrder() {
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
-			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString();
-			push(ref(db, 'orders'), order);
+			push(ref(db, '/orders'), order);
 			order = new Order();
 		}
 	}
@@ -128,7 +127,7 @@
 			</div>
 		</div>
 	{:else}
-		{#each Object.entries(mapOrdersFiltered) as [key, value], i}
+		{#each Object.entries(mapOrdersFiltered).sort(([k1, v1], [k2, v2]) => new Date(v2.dateOrderCreated) - new Date(v1.dateOrderCreated)) as [key, value], i}
 			<ComponentOrder order={value} {i} backToUrl="/client/order" />
 		{/each}
 	{/if}

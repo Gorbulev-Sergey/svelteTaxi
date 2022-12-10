@@ -40,3 +40,8 @@
 		</div>
 	</div>
 </ComponentAuth>
+
+<!-- <a
+	href="https://yandex.ru/navi/?from=tabbar&ll=36.050897%2C54.470741&mode=routes&rtext=54.389394%2C35.739075~54.469369%2C36.039609~54.518168%2C36.251009&rtt=auto&ruri=~~ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxOTMwMDk5MDIxEjnQoNC%2B0YHRgdC40Y8sINCa0LDQu9GD0LPQsCwg0YPQu9C40YbQsCDQoNGL0LvQtdC10LLQsCwgMTgiCg1MARFCFWsSWkI%3D&source=serp_navig&utm_medium=mapframe&utm_source=maps&z=13.06"
+	style="color:#eee;font-size:12px;position:absolute;top:14px;">Яндекс Карты</a
+> -->

@@ -15,7 +15,6 @@
 	function createOrder() {
 		if (order.route.positionFrom && order.route.positionTo && order.goods && order.car) {
 			order.client = auth.currentUser?.uid;
-			order.dateOfDelivery = new Date(order.dateOfDelivery).toLocaleDateString();
 
 			mapsGetRouteData(mapsRoute($positionFrom.address, $positionTo.address), (r) => {
 				order.route.distance = r.distance;
@@ -91,12 +90,15 @@
 		placeholder="груз, опишите в двух словах"
 	/>
 	<input class="form-control mb-3" bind:value={order.car} placeholder="автомобиль" />
-	<input
-		type="date"
-		class="form-control mb-3"
-		bind:value={order.dateOfDelivery}
-		placeholder="когда, дата доставки"
-	/>
+	<div class="input-group mb-3">
+		<span class="input-group-text">дата доставки</span>
+		<input
+			type="date"
+			class="form-control"
+			bind:value={order.dateOfDelivery}
+			placeholder="когда, дата доставки"
+		/>
+	</div>
 	<div class="d-flex justify-content-between align-items-center">
 		<button
 			class="btn btn-dark mb-1"

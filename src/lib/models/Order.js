@@ -6,8 +6,8 @@ export default class Order {
 		route = new Route(),
 		goods = null,
 		car = null,
-		dateOrderCreated = new Date().toLocaleDateString(),
-		dateOfDelivery = new Date().toLocaleDateString(),
+		dateOrderCreated = new Date(Date.now()),
+		dateOfDelivery = new Date(Date.now()),
 		driver = null,
 		client = null,
 		status = null
@@ -15,8 +15,12 @@ export default class Order {
 		this.route = route;
 		this.goods = goods;
 		this.car = car;
-		this.dateOrderCreated = dateOrderCreated;
-		this.dateOfDelivery = dateOfDelivery;
+		this.dateOrderCreated = `${dateOrderCreated.getFullYear()}-${
+			dateOrderCreated.getMonth() + 1
+		}-${dateOrderCreated.getDate()}`;
+		this.dateOfDelivery = `${dateOfDelivery.getFullYear()}-${
+			dateOfDelivery.getMonth() + 1
+		}-${dateOfDelivery.getDate()}`;
 		this.driver = driver;
 		this.client = client;
 		this.status = status;

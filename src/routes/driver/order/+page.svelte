@@ -21,6 +21,7 @@
 	import { updateCurrentUser } from 'firebase/auth';
 	import ComponentAuth from '$lib/components/ComponentAuth.svelte';
 	import ComponentTitle from '$lib/components/ComponentTitle.svelte';
+	import { noop } from 'svelte/internal';
 
 	let user;
 	let order = new Order();
@@ -70,7 +71,7 @@
 			if (auth) {
 				user = auth;
 				// Очень важный код (ЗАПРОС С ФИЛЬТРАЦИЕЙ)
-				onValue(query(child(ref(db), 'orders')), (s) => {
+				onValue(ref(db, 'orders'), (s) => {
 					if (s.exists()) {
 						mapOrders = s.val();
 						mapOrdersFiltered = filter(ordersForFilterWho.selected, ordersForFilterStatus.selected);
@@ -152,7 +153,7 @@
 		</div>
 	</div>
 
-	{#each Object.entries(mapOrdersFiltered) as [key, value], i}
+	{#each Object.entries(mapOrdersFiltered).sort(([k1, v1], [k2, v2]) => new Date(v2.dateOrderCreated) - new Date(v1.dateOrderCreated)) as [key, value], i}
 		<ComponentOrder order={value} {i} backToUrl="/driver/order">
 			<div class="d-flex flex-column">
 				{#if !value.status}
@@ -167,7 +168,7 @@
 						}}>Взять заказ</button
 					>
 				{/if}
-				{#if value.status == 'в работе' && new Date(value.dateOfDelivery).getTime() >= new Date().getTime()}
+				{#if value.status == 'в работе' && new Date(value.dateOfDelivery) <= new Date(Date.now())}
 					<button
 						class="btn btn-sm btn-success"
 						on:click={() => {
